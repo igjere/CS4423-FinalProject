@@ -9,7 +9,7 @@ public class Creature : MonoBehaviour
     [Header("Stats")]
     public float speed = 0f;
     [SerializeField] float jumpForce = 10;
-    [SerializeField] int health = 3;
+    [SerializeField] public int health = 3;
     [SerializeField] int stamina = 3;
     [SerializeField] bool isInvincible = false;
     [SerializeField] float invincibilityDurationSeconds = 5f; // Duration of i-frames in seconds
@@ -218,4 +218,8 @@ public class Creature : MonoBehaviour
             // StartCoroutine(BecomeTemporarilyInvincible()); // Start invincibility frames
         }
     }
+
+    /* TODO: 
+       Implement functions for adding to health and other stats for items
+    */
 }

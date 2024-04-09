@@ -74,7 +74,7 @@ public class RoomInstance : MonoBehaviour {
 		Color pixelColor = tex.GetPixel(x,y);
 		//skip clear spaces in texture
 		if (pixelColor.a == 0){
-			if(x != tex.width && x != 0 && y != tex.height && y != 0){
+			if(x != tex.width-1 && x > 1 && y != tex.height-1 && y > 1){
 				Vector3 spawnPos = positionFromTileGrid(x, y);
 				validSpawnPoints.Add(spawnPos);
 			}
@@ -86,8 +86,7 @@ public class RoomInstance : MonoBehaviour {
 				Vector3 spawnPos = positionFromTileGrid(x,y);
 				Instantiate(mapping.prefab, spawnPos, Quaternion.identity).transform.parent = this.transform;
 			}else{
-				//forgot to remove the old print for the tutorial lol so I'll leave it here too
-				//print(mapping.color + ", " + pixelColor);
+				
 			}
 		}
 	}

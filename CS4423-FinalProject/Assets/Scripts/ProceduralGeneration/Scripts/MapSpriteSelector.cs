@@ -11,7 +11,15 @@ public class MapSpriteSelector : MonoBehaviour {
 	public int type; // 0: normal, 1: enter
 	public Color normalColor, enterColor, currentRoomPlayerColor;
 	Color mainColor;
-	SpriteRenderer rend;
+	public SpriteRenderer rend;
+	void Awake() {
+    	InitializeRenderer();
+	}
+	private void InitializeRenderer() {
+		if (rend == null) {
+			rend = GetComponent<SpriteRenderer>();
+		}
+	}
 	void Start () {
 		rend = GetComponent<SpriteRenderer>();
 		mainColor = normalColor;
@@ -73,15 +81,28 @@ public class MapSpriteSelector : MonoBehaviour {
 	}
 
 	void PickColor(){ //changes color based on what type the room is
+		if (rend == null){
+			Debug.Log("rend null"); 
+			return;
+		}
 		if (type == 0){
 			mainColor = normalColor;
+			rend.color = mainColor;
 		}else if (type == 1){
-			mainColor = normalColor;
+			mainColor = enterColor;
+			rend.color = mainColor;
 		}else if(type == 2){
 			mainColor = currentRoomPlayerColor;
+			rend.color = mainColor;
+			rend.color = mainColor;
+			rend.sortingOrder = 1;
 		}
-		rend.color = mainColor;
+		
 	}
+	public void UpdateColor() {
+    	PickColor(); // Call this to update the color based on the current type
+	}
+
 	public void SetCurrentRoomColor() {
         // Set the color of the current room to something distinct
         rend.color = currentRoomPlayerColor;

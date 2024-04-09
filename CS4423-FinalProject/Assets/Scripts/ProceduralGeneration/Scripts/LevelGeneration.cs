@@ -9,6 +9,10 @@ public class LevelGeneration : MonoBehaviour {
 	int gridSizeX, gridSizeY, numberOfRooms = 20;
 	public GameObject roomWhiteObj;
 	public Transform mapRoot;
+
+	private Dictionary<Vector2, GameObject> roomGameObjects = new Dictionary<Vector2, GameObject>();
+	private GameObject currentRoomSprite;
+
 	void Start () {
 		if (numberOfRooms >= (worldSize.x * 2) * (worldSize.y * 2)){ // make sure we dont try to make more rooms than can fit in our grid
 			numberOfRooms = Mathf.RoundToInt((worldSize.x * 2) * (worldSize.y * 2));
@@ -153,13 +157,17 @@ public class LevelGeneration : MonoBehaviour {
 			drawPos.x *= 16;//aspect ratio of map sprite
 			drawPos.y *= 8;
 			//create map obj and assign its variables
-			MapSpriteSelector mapper = Object.Instantiate(roomWhiteObj, drawPos, Quaternion.identity).GetComponent<MapSpriteSelector>();
+			//MapSpriteSelector mapper = Object.Instantiate(roomWhiteObj, drawPos, Quaternion.identity).GetComponent<MapSpriteSelector>();
+			GameObject roomObj = Instantiate(roomWhiteObj, drawPos, Quaternion.identity, mapRoot);
+       		MapSpriteSelector mapper = roomObj.GetComponent<MapSpriteSelector>();
 			mapper.type = room.type;
 			mapper.up = room.doorTop;
 			mapper.down = room.doorBot;
 			mapper.right = room.doorRight;
 			mapper.left = room.doorLeft;
 			mapper.gameObject.transform.parent = mapRoot;
+
+			roomGameObjects[room.gridPos] = roomObj;
 		}
 	}
 	void SetRoomDoors(){
@@ -192,14 +200,106 @@ public class LevelGeneration : MonoBehaviour {
 			}
 		}
 	}
-	public void SetCurrentRoom(Vector2 oldRoom, Vector2 newRoom){
-		Vector2 drawPos;
-		drawPos.x = newRoom.x;//aspect ratio of map sprite
-		drawPos.y = newRoom.y;
-		//create map obj and assign its variables
-		MapSpriteSelector mapper = Object.Instantiate(roomWhiteObj, drawPos, Quaternion.identity).GetComponent<MapSpriteSelector>();
-		mapper.type = 2;
-		mapper.gameObject.transform.parent = mapRoot;
+	/* public void SetCurrentRoom(Vector2 oldRoom, Vector2 newRoom){
+		Debug.Log($"Setting current room from {oldRoom} to {newRoom}");
+
+		if (roomGameObjects.TryGetValue(newRoom, out GameObject oldRoomObj)) {
+			Debug.Log("Destroying old room sprite.");
+			Destroy(oldRoomObj);
+			roomGameObjects.Remove(newRoom); // Remove the old room from the dictionary
+		}
+
+		Room targetRoom = null;
+		// Attempt to find the room that matches newRoom
+		foreach (Room room in rooms){
+			if (room != null && room.gridPos == newRoom){
+				targetRoom = room;
+				break; // Exit the loop once the room is found
+			}
+		}
+
+		if (targetRoom == null) {
+			Debug.LogError("Target room not found in SetCurrentRoom.");
+			return; // Exit the method if no matching room is found
+		}
+
+		Vector2 drawPos = targetRoom.gridPos;
+		drawPos.x *= 16; // Aspect ratio of map sprite
+		drawPos.y *= 8;
+		// Instantiate a new room sprite and update the currentRoomSprite reference
+		GameObject newRoomObj = Instantiate(roomWhiteObj, drawPos, Quaternion.identity, mapRoot);
+		MapSpriteSelector mapper = newRoomObj.GetComponent<MapSpriteSelector>();
+		if (mapper != null) {
+			// Destroy(mapper.rend);
+			mapper.type = 2; // Assuming type 2 is for the current room
+			mapper.UpdateColor();
+			mapper.up = targetRoom.doorTop;
+			mapper.down = targetRoom.doorBot;
+			mapper.right = targetRoom.doorRight;
+			mapper.left = targetRoom.doorLeft;
+			mapper.rend.sortingOrder = 0;
+		} 
+		else {
+			Debug.LogError("MapSpriteSelector component not found on instantiated room object.");
+		}
+		roomGameObjects[newRoom] = newRoomObj;
+		currentRoomSprite = newRoomObj;
+	} */
+	public void SetCurrentRoom(Vector2 oldRoom, Vector2 newRoom) {
+		Debug.Log($"Setting current room from {oldRoom} to {newRoom}");
+
+		// First, handle the old room sprite if it exists
+		if (roomGameObjects.TryGetValue(oldRoom, out GameObject oldRoomObj)) {
+			MapSpriteSelector oldRoomMapper = oldRoomObj.GetComponent<MapSpriteSelector>();
+			if (oldRoomMapper != null) {
+				oldRoomMapper.type = 0; // Change the sprite type of the old room back to 0
+				oldRoomMapper.UpdateColor(); // Make sure to update the color or sprite as needed
+				// Optionally adjust sortingOrder or other properties if necessary
+				// oldRoomMapper.rend.sortingOrder = 0; // This ensures it's not rendered above other objects unexpectedly
+			}
+		}
+
+		// Next, handle the new room sprite creation and destruction of the previous sprite if needed
+		if (roomGameObjects.TryGetValue(newRoom, out GameObject newRoomObj)) {
+			Debug.Log("Found existing sprite for new room. Destroying.");
+			Destroy(newRoomObj);
+			roomGameObjects.Remove(newRoom);
+		}
+
+		Room targetRoom = null;
+		foreach (Room room in rooms) {
+			if (room != null && room.gridPos == newRoom) {
+				targetRoom = room;
+				break; // Room found
+			}
+		}
+
+		if (targetRoom == null) {
+			Debug.LogError("Target room not found in SetCurrentRoom.");
+			return; // Exit if no matching room is found
+		}
+
+		// Instantiate and set up the new room sprite
+		Vector2 drawPos = targetRoom.gridPos;
+		drawPos.x *= 16; // Aspect ratio of map sprite
+		drawPos.y *= 8;
+		newRoomObj = Instantiate(roomWhiteObj, drawPos, Quaternion.identity, mapRoot);
+		MapSpriteSelector mapper = newRoomObj.GetComponent<MapSpriteSelector>();
+		if (mapper != null) {
+			mapper.type = 2; // Assuming type 2 is for the current room
+			mapper.UpdateColor();
+			mapper.up = targetRoom.doorTop;
+			mapper.down = targetRoom.doorBot;
+			mapper.right = targetRoom.doorRight;
+			mapper.left = targetRoom.doorLeft;
+			mapper.rend.sortingOrder = 0; // Set the sorting order to ensure it's rendered correctly
+		} else {
+			Debug.LogError("MapSpriteSelector component not found on instantiated room object.");
+		}
+
+		// Update the dictionary with the new room sprite
+		roomGameObjects[newRoom] = newRoomObj;
+		currentRoomSprite = newRoomObj;
 	}
 
 }

@@ -148,6 +148,7 @@ public class DoorOpener : MonoBehaviour
         LevelGeneration levelGen = FindObjectOfType<LevelGeneration>();
         Room nextRoom = null;
         Vector2 gridOffset = Vector2.zero;
+        Vector2 nextRoomGridPos = currentRoom.gridPos;
         
 
         switch(doorIdentity){
@@ -159,6 +160,7 @@ public class DoorOpener : MonoBehaviour
 			    tempPos += Vector3.right * horMove * moveJump.x; //jump bnetween rooms based opn input
 			    tempPos += Vector3.up * vertMove * moveJump.y;
 			    transform.position = tempPos;
+                nextRoomGridPos.y++;
                 cam.MoveCamera("Top");
                 break;
             case "Bottom":
@@ -169,16 +171,18 @@ public class DoorOpener : MonoBehaviour
 			    tempPos += Vector3.right * horMove * moveJump.x; //jump bnetween rooms based opn input
 			    tempPos += Vector3.up * vertMove * moveJump.y;
 			    transform.position = tempPos;
+                nextRoomGridPos.y--;
                 cam.MoveCamera("Bottom");
                 break;
             case "Left":
-                 gridOffset = new Vector2(-16, 0);
+                gridOffset = new Vector2(-16, 0);
                 horMove = System.Math.Sign(-1);//capture input
 			    vertMove = System.Math.Sign(0);
 			    // Vector3 tempPos = transform.position;
 			    tempPos += Vector3.right * horMove * moveJump.x; //jump bnetween rooms based opn input
 			    tempPos += Vector3.up * vertMove * moveJump.y;
 			    transform.position = tempPos;
+                nextRoomGridPos.x--;
                 cam.MoveCamera("Left");
                 break;
             case "Right":
@@ -189,13 +193,13 @@ public class DoorOpener : MonoBehaviour
 			    tempPos += Vector3.right * horMove * moveJump.x; //jump bnetween rooms based opn input
 			    tempPos += Vector3.up * vertMove * moveJump.y;
 			    transform.position = tempPos;
+                nextRoomGridPos.x++;
                 cam.MoveCamera("Right");
                 break;
         }
         // Assuming LevelGeneration has a method to get a room by grid position
         // nextRoom = levelGen.GetRoomAtGridPosition(nextRoomGridPos);
         // nextRoom = levelGen.GetRoomInstanceAtGridPosition(currentRoom.gridPos + nextRoomGridPos);
-        Vector2 nextRoomGridPos = currentRoom.gridPos;
         Debug.Log("Current room grid position: " + currentRoom.gridPos);
         Debug.Log("Next room grid grid position: " + nextRoomGridPos);
 
