@@ -8,5 +8,8 @@ public class UtilityBehaviors : MonoBehaviour {
 		if (Input.GetKeyDown("r")){//reload scene, for testing purposes
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
+		 if (Input.GetKeyDown(KeyCode.Escape)){//reload scene, for testing purposes
+			SceneManager.LoadScene("MainMenu");
+		}
 	}
 }

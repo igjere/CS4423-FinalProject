@@ -37,6 +37,10 @@ public class RoomInstance : MonoBehaviour {
 		doorRight = _doorRight;
 		MakeDoors();
 		GenerateRoomTiles();
+		if (type == 1) {
+			SpawnBookshelf();
+			return; // Skip spawning enemies and coins for type 1 rooms
+    	}
 		SpawnEnemies();
 		SpawnCoins();
 	}
@@ -98,7 +102,12 @@ public class RoomInstance : MonoBehaviour {
 		ret = new Vector3(tileSize * (float) x, -tileSize * (float) y, 0) + offset + transform.position;
 		return ret;
 	}
+	void SpawnBookshelf() {
+		Vector3 centerPos = transform.position; // Assuming this is the center of the room
+		Instantiate(trashcanPrefab, centerPos, Quaternion.identity, transform);
+	}
 	void SpawnEnemies() {
+		 if (type == 1) return;
 		int enemiesToSpawn = Random.Range(3, 6); // Spawns 3 to 6 enemies
 		for (int i = 0; i < enemiesToSpawn; i++) {
 			if(validSpawnPoints.Count > 0) {
@@ -119,6 +128,7 @@ public class RoomInstance : MonoBehaviour {
 		}
 	}
 	void SpawnCoins() {
+		if (type == 1) return;
 		int coinsToSpawn = Random.Range(1, 3); 
 		for (int i = 0; i < coinsToSpawn; i++) {
 			if(validSpawnPoints.Count > 0) {

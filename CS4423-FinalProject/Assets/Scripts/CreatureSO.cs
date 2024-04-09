@@ -7,6 +7,8 @@ public class CreatureSO : ScriptableObject
 {
 
    private void OnEnable() => hideFlags = HideFlags.DontUnloadUnusedAsset;
-   public int health = 0;
-   public int stamina = 0;
+   // public float health = 0;
+   public float currentHealth = 0;
+   public float maxHealth = 0;
+   public float stamina = 0;
 }

@@ -12,7 +12,9 @@ public class HealthText : MonoBehaviour
 
 
     public void Update(){
-        healthText.text = creatureSO.health.ToString();
+        float health = creatureSO.currentHealth; // If you want the current health value
+        float maxHealth = creatureSO.maxHealth; // If you want the maximum health value
+
     }
 
 

@@ -7,9 +7,12 @@ using UnityEngine.SceneManagement;
 public class Creature : MonoBehaviour
 {
     [Header("Stats")]
+    public bool isAlive = true;
     public float speed = 0f;
     [SerializeField] float jumpForce = 10;
-    [SerializeField] public int health = 3;
+    // [SerializeField] public float health = 3;
+    [SerializeField] private float currentHealth = 3; // Current filled health.
+    [SerializeField] private float maxHealth = 3; //
     [SerializeField] int stamina = 3;
     [SerializeField] bool isInvincible = false;
     [SerializeField] float invincibilityDurationSeconds = 5f; // Duration of i-frames in seconds
@@ -26,7 +29,12 @@ public class Creature : MonoBehaviour
 
     [Header("Paper")]
     public float paperRate = 0.5f;
+    public float paperDamage = 1;
     [SerializeField] float paperSize = 0.5f;
+    /* [SerializeField] public float paperDamage = 1;
+    [SerializeField] public float paperSpeed = 5f;
+    [SerializeField] public float paperRate = 5f; // Shots per second
+    [SerializeField] public float paperRange = 1.5f; */
 
     [Header("Flavor")]
     [SerializeField] string creatureName = "Meepis";
@@ -60,7 +68,8 @@ public class Creature : MonoBehaviour
     void Update()
     {
         if(creatureSO != null){
-            creatureSO.health = health;
+            creatureSO.currentHealth = currentHealth;
+            creatureSO.maxHealth = maxHealth;
             creatureSO.stamina = stamina;
         }
     }
@@ -77,6 +86,7 @@ public class Creature : MonoBehaviour
 
     public void MoveCreature(Vector3 direction)
     {
+        if (!isAlive) return;
 
         if (movementType == CreatureMovementType.tf)
         {
@@ -110,6 +120,7 @@ public class Creature : MonoBehaviour
 
     public void MoveCreatureRb(Vector3 direction)
     {
+        if (!isAlive) return;
         Vector3 currentVelocity = Vector3.zero;
         if(perspectiveType == CreaturePerspective.sideScroll){
             currentVelocity = new Vector3(0, rb.velocity.y, 0);
@@ -130,10 +141,14 @@ public class Creature : MonoBehaviour
         transform.position += direction * Time.deltaTime * speed;
     }
 
-    public int GetHealth()
+    public float GetCurrentHealth() => currentHealth;
+    public float GetMaxHealth() => maxHealth;
+    public float GetCurrentSpeed() => speed;
+
+    /* public float GetHealth()
     {
         return health;
-    }
+    } */
 
     public int AddCoins(int amount)
     {
@@ -159,20 +174,60 @@ public class Creature : MonoBehaviour
         return isInvincible;
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(float damageAmount)
     {
-        if (isInvincible  || health <= 0){ 
+        if (isInvincible  || currentHealth <= 0){ 
             return; // Do nothing if invincible
         }
 
-        health -= damageAmount;
-        if (health <= 0)
+        currentHealth -= damageAmount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health doesn't fall below 0 or above maxHealth
+
+        CheckDeath();
+        /* if (health <= 0)
         {
             Debug.Log(creatureName + " has died.");
             // yield return new WaitForSeconds(1f);
             Destroy(this.gameObject);
             SceneManager.LoadScene("MainMenu");
             // screenFader.FadeToColor("MainMenu");
+        }
+        else
+        {
+            // Debug.Log(creatureName + " takes " + damageAmount + " damage, " + health + " health remaining.");
+            StartCoroutine(BecomeTemporarilyInvincible()); // Start invincibility frames
+        } */
+    }
+
+    public void Heal(float amount)
+    {
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health doesn't exceed maxHealth
+    }
+
+    // Call this method to increase max health (heart containers) and fully heal
+    public void IncreaseMaxHealth(float increaseAmount)
+    {
+        maxHealth += increaseAmount;
+        currentHealth = maxHealth; // Fully heal the player
+    }
+
+    public void DecreaseMaxHealth(float decreaseAmount)
+    {
+        maxHealth -= decreaseAmount;
+        currentHealth = maxHealth; // Fully heal the player
+        StartCoroutine(BecomeTemporarilyInvincible()); // Start invincibility frames
+    }
+
+    private void CheckDeath()
+    {
+        if (currentHealth <= 0)
+        {
+            Debug.Log($"{creatureName} has died.");
+            isAlive = false;
+            Destroy(gameObject);
+            Destroy(this.gameObject);
+            SceneManager.LoadScene("MainMenu");
         }
         else
         {
@@ -194,14 +249,14 @@ public class Creature : MonoBehaviour
         isInvincible = false;
     }
 
-    public void GiveDamage(int damageAmount)
+    public void GiveDamage(float damage)
     {
-        if (health <= 0){ 
+        if (currentHealth <= 0){ 
             return;
         }
 
-        health -= damageAmount;
-        if (health <= 0)
+        currentHealth -= damage;
+        if (currentHealth <= 0)
         {
             // Debug.Log(creatureName + " has died.");
         

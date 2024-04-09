@@ -51,7 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 18
   jumpForce: 15
-  health: 5
+  currentHealth: 5
+  maxHealth: 5
   stamina: 3
   isInvincible: 0
   invincibilityDurationSeconds: 5
@@ -63,6 +64,7 @@ MonoBehaviour:
   jumpOffset: -0.5
   jumpRadius: 0.25
   paperRate: 0.5
+  paperDamage: 1
   paperSize: 0.5
   creatureName: Meepis
   body: {fileID: 1906307255310826078}
@@ -134,6 +136,10 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6059629928162747791, guid: dc85eb5d0d5ab7a419f45e43250f5131, type: 3}
   speed: 30
   fireRate: 1
+  paperRange: 10
+  damage: 1
+  spectral: 0
+  homing: 0
 --- !u!70 &6774782581203387882
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

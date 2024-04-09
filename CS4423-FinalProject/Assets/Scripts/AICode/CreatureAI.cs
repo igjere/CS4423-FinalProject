@@ -147,7 +147,7 @@ public class CreatureAI : MonoBehaviour
             {
                 // Debug.Log("Got here");
                 // Call TakeDamage on targetCreature with the damage amount, e.g., 1
-                targetCreature.TakeDamage(1);
+                targetCreature.TakeDamage(0.5f);
             }
         }
     }
