@@ -44,6 +44,7 @@ public class Creature : MonoBehaviour
     [Header("Tracked Data")]
     [SerializeField] Vector3 homePosition = Vector3.zero;
     [SerializeField] CreatureSO creatureSO;
+    // [SerializeField] ItemDatabase itemDB;
 
     [SerializeField] private ScreenFader screenFader;
 
@@ -225,6 +226,11 @@ public class Creature : MonoBehaviour
         {
             Debug.Log($"{creatureName} has died.");
             isAlive = false;
+            /* ItemDatabase itemDatabase = FindObjectOfType<ItemDatabase>(); // Assuming it's attached to a GameObject
+            if (itemDatabase != null) {
+                itemDatabase.ResetAvailableItems();
+            } */
+            ItemDatabase.Instance.ResetAvailableItems();
             Destroy(gameObject);
             Destroy(this.gameObject);
             SceneManager.LoadScene("MainMenu");

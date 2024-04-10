@@ -109,7 +109,8 @@ MonoBehaviour:
   doorD: {fileID: 1152370622949468, guid: 71ef14862abca91428027002fc9c0b20, type: 3}
   doorL: {fileID: 1152370622949468, guid: 71ef14862abca91428027002fc9c0b20, type: 3}
   doorR: {fileID: 1152370622949468, guid: 71ef14862abca91428027002fc9c0b20, type: 3}
-  doorWall: {fileID: 1348133729177994, guid: 526cda0fd54858c44b466001f90b3db2, type: 3}
+  doorWall: {fileID: 1348133729177994, guid: 6b419fb5eb2a32e4bb7518ce686af806, type: 3}
+  wallTile: {fileID: 1348133729177994, guid: 526cda0fd54858c44b466001f90b3db2, type: 3}
   mappings:
   - color: {r: 0, g: 0, b: 0, a: 1}
     prefab: {fileID: 1348133729177994, guid: 526cda0fd54858c44b466001f90b3db2, type: 3}

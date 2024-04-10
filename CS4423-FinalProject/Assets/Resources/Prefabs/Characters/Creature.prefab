@@ -171,22 +171,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b59b642c7c1410346b1e13dfdc77f94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 1
   speed: 5
   jumpForce: 15
-  health: 3
+  currentHealth: 3
+  maxHealth: 3
   stamina: 3
+  isInvincible: 0
+  invincibilityDurationSeconds: 5
   movementType: 1
+  perspectiveType: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 64
   jumpOffset: -0.5
   jumpRadius: 0.25
+  paperRate: 0.5
+  paperDamage: 1
+  paperSize: 0.5
   creatureName: Meepis
   body: {fileID: 5267583394387202235}
   animationStateChangers:
   - {fileID: 9067313443335221706}
   homePosition: {x: 0, y: 0, z: 0}
   creatureSO: {fileID: 11400000, guid: a93bd3014551c6a45bea79d2fdaf7d0d, type: 2}
+  itemDB: {fileID: 11400000, guid: bb6d591237bd33b4bbd97028c565d116, type: 2}
+  screenFader: {fileID: 0}
+  coins: 0
+  roomInstance: {fileID: 0}
 --- !u!50 &157982276809837124
 Rigidbody2D:
   serializedVersion: 4
@@ -228,6 +240,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 6059629928162747791, guid: dc85eb5d0d5ab7a419f45e43250f5131, type: 3}
   speed: 5
+  fireRate: 2
+  paperRange: 10
+  damage: 1
+  spectral: 0
+  homing: 0
+  projectileSize: 1
 --- !u!70 &1846697947270860494
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -386,3 +404,4 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  player: {fileID: 0}

@@ -10,7 +10,7 @@ public class RoomInstance : MonoBehaviour {
 	[HideInInspector]
 	public bool doorTop, doorBot, doorLeft, doorRight;
 	[SerializeField]
-	GameObject doorU, doorD, doorL, doorR, doorWall;
+	GameObject doorU, doorD, doorL, doorR, doorWall, wallTile;
 	[SerializeField]
 	ColorToGameObject[] mappings;
 	float tileSize = 16;
@@ -48,24 +48,340 @@ public class RoomInstance : MonoBehaviour {
 		//top door, get position then spawn
 		Vector3 spawnPos = transform.position + Vector3.up*(roomSizeInTiles.y/4 * tileSize) - Vector3.up*(tileSize/4);
 		PlaceDoor(spawnPos, doorTop, doorU);
+		// PlaceWallTilesAroundDoor(spawnPos, "Top");
 		//bottom door
 		spawnPos = transform.position + Vector3.down*(roomSizeInTiles.y/4 * tileSize) - Vector3.down*(tileSize/4);
 		PlaceDoor(spawnPos, doorBot, doorD);
+		// PlaceWallTilesAroundDoor(spawnPos, "Bottom");
 		//right door
 		spawnPos = transform.position + Vector3.right*(roomSizeInTiles.x * tileSize) - Vector3.right*(tileSize);
 		PlaceDoor(spawnPos, doorRight, doorR);
+		// PlaceWallTilesAroundDoor(spawnPos, "Right");
 		//left door
 		spawnPos = transform.position + Vector3.left*(roomSizeInTiles.x * tileSize) - Vector3.left*(tileSize);
 		PlaceDoor(spawnPos, doorLeft, doorL);
+		// PlaceWallTilesAroundDoor(spawnPos, "Left");
 	}
 	void PlaceDoor(Vector3 spawnPos, bool door, GameObject doorSpawn){
 		// check whether its a door or wall, then spawn
 		if (door){
-			Instantiate(doorSpawn, spawnPos, Quaternion.identity).transform.parent = transform;
+			// Instantiate(doorSpawn, spawnPos, Quaternion.identity).transform.parent = transform;
+			GameObject instantiatedDoor = Instantiate(doorSpawn, spawnPos, Quaternion.identity);
+        	instantiatedDoor.transform.parent = transform;
+			Debug.Log($"Door placed at position {spawnPos}. Door type: {(door ? doorSpawn.name.Replace("(Clone)", "").Trim() : "Wall")}"); 
+			Vector3 relativePosition = spawnPos - transform.position;
+			string doorOrientation = GetDoorOrientation(relativePosition);
+			Debug.Log($"Door placed at position {spawnPos}. Door orientation: {doorOrientation}");
+			PlaceWallTilesForDoor(spawnPos, doorOrientation);
 		}else{
-			Instantiate(doorWall, spawnPos, Quaternion.identity).transform.parent = transform;
+			Instantiate(wallTile, spawnPos, Quaternion.identity).transform.parent = transform;
+		}
+		// Deduce door orientation based on spawnPos relative to room position
+		// Vector3 relativePosition = spawnPos - transform.position;
+		// string doorOrientation = GetDoorOrientation(relativePosition);
+
+		// Log door orientation
+		// Debug.Log($"Door placed at position {spawnPos}. Door orientation: {doorOrientation}");
+	}
+
+	// Utility method to get door orientation
+	string GetDoorOrientation(Vector3 relativePosition) {
+		if (relativePosition.y > 0) return "Top";
+		if (relativePosition.y < 0) return "Bottom";
+		if (relativePosition.x > 0) return "Right";
+		if (relativePosition.x < 0) return "Left";
+		return "Unknown";
+	}
+	void PlaceWallTilesForDoor(Vector3 doorPosition, string doorOrientation){
+		Vector3 wallTilePosition;
+		GameObject wall;
+		SpriteRenderer renderer;
+		if (doorOrientation == "Top") {
+			// Place wall tiles to the left and right of the top door
+			wallTilePosition = doorPosition + Vector3.left * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+			wallTilePosition = doorPosition + Vector3.right * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+
+			// Optional: Place an additional wall tile above the door for aesthetic completeness
+			wallTilePosition = doorPosition + Vector3.up * tileSize; // Adjust as necessary
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+		}
+
+		// Handle left door wall tiles placement
+		if (doorOrientation == "Left") {
+			// Place wall tiles above and below the left door
+			wallTilePosition = doorPosition + Vector3.up * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+			wallTilePosition = doorPosition + Vector3.down * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+
+			// Optional: Place an additional wall tile to the left of the door for aesthetic completeness
+			wallTilePosition = doorPosition + Vector3.left * tileSize; // Adjust as necessary
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+		}
+		
+		if (doorOrientation == "Bottom") {
+			// Place wall tiles to the left and right of the top door
+			wallTilePosition = doorPosition + Vector3.left * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+			wallTilePosition = doorPosition + Vector3.right * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+
+			// Optional: Place an additional wall tile above the door for aesthetic completeness
+			wallTilePosition = doorPosition + Vector3.down * tileSize; // Adjust as necessary
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+		}
+
+		// Handle left door wall tiles placement
+		if (doorOrientation == "Right") {
+			// Place wall tiles above and below the left door
+			wallTilePosition = doorPosition + Vector3.up * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+			wallTilePosition = doorPosition + Vector3.down * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+
+			// Optional: Place an additional wall tile to the left of the door for aesthetic completeness
+			wallTilePosition = doorPosition + Vector3.right * tileSize; // Adjust as necessary
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
 		}
 	}
+	// Helper method to place a wall tile at a specified position if it is empty
+	void PlaceWallTileIfEmpty(Vector3 position) {
+		if (IsTilePositionEmpty(position)) {
+			Instantiate(doorWall, position, Quaternion.identity, transform);
+		}
+	}
+
+	// Existing method to check if a tile position is empty
+	bool IsTilePositionEmpty(Vector3 position) {
+		float checkRadius = 0.1f; // Small radius for checking
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(position, checkRadius);
+		foreach (var collider in colliders) {
+			if (collider.CompareTag("Wall")) { // Adjust this tag based on your project
+				return false; // Found an object; position is not empty
+			}
+		}
+		return true; // No objects found; position is empty
+	}
+	/* void PlaceWallTilesAroundDoor(Vector3 doorPosition, string doorOrientation){
+		Vector3 wallTilePosition;
+		GameObject wall;
+		SpriteRenderer renderer;
+
+		if (doorOrientation == "Top") {
+			// Place wall tiles to the left and right of the top door
+			wallTilePosition = doorPosition + Vector3.left * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+			wallTilePosition = doorPosition + Vector3.right * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+
+			// Optional: Place an additional wall tile above the door for aesthetic completeness
+			wallTilePosition = doorPosition + Vector3.up * tileSize; // Adjust as necessary
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+		}
+
+		// Handle left door wall tiles placement
+		if (doorOrientation == "Left") {
+			// Place wall tiles above and below the left door
+			wallTilePosition = doorPosition + Vector3.up * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+			wallTilePosition = doorPosition + Vector3.down * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+
+			// Optional: Place an additional wall tile to the left of the door for aesthetic completeness
+			wallTilePosition = doorPosition + Vector3.left * tileSize; // Adjust as necessary
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+		}
+		
+		if (doorOrientation == "Bottom") {
+			// Place wall tiles to the left and right of the top door
+			wallTilePosition = doorPosition + Vector3.left * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+			wallTilePosition = doorPosition + Vector3.right * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+
+			// Optional: Place an additional wall tile above the door for aesthetic completeness
+			wallTilePosition = doorPosition + Vector3.down * tileSize; // Adjust as necessary
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+		}
+
+		// Handle left door wall tiles placement
+		if (doorOrientation == "Right") {
+			// Place wall tiles above and below the left door
+			wallTilePosition = doorPosition + Vector3.up * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+			wallTilePosition = doorPosition + Vector3.down * tileSize;
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+
+			// Optional: Place an additional wall tile to the left of the door for aesthetic completeness
+			wallTilePosition = doorPosition + Vector3.right * tileSize; // Adjust as necessary
+			if (IsTilePositionEmpty(wallTilePosition)) {
+				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
+				renderer = wall.GetComponent<SpriteRenderer>();
+				if (renderer != null) {
+					renderer.enabled = false; // This disables the rendering, making it invisible
+				}
+			}
+		}
+
+		// Optionally, place additional wall tiles if needed to make the doorway look more complete
+		// For example, for a door on the left or right, you might want to place wall tiles above and below the already placed ones
+	}
+	bool IsTilePositionEmpty(Vector3 position) {
+		// Define the size of the box based on your WallTile size
+		Vector2 checkSize = new Vector2(16f, 16f); // Adjust this value if your WallTile size changes
+
+		// You may need to adjust the layerMask if you are using specific layers for your wall tiles
+		// For simplicity, I'm not using a layer mask here, but you can add it as a parameter if needed
+		int layerMask = ~0; // This means it will check all layers
+
+		Collider2D[] colliders = Physics2D.OverlapBoxAll(position, checkSize, 0, layerMask);
+		foreach (var collider in colliders) {
+			if (collider.CompareTag("Wall")) { // Assuming WallTiles are tagged as "WallTile"
+				return false; // Found a WallTile at this position
+			}
+		}
+		return true; // No WallTile found at this position
+	} */
 	void GenerateRoomTiles(){
 		//loop through every pixel of the texture
 		for(int x = 0; x < tex.width; x++){

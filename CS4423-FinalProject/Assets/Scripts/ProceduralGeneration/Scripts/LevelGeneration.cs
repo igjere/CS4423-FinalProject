@@ -8,6 +8,7 @@ public class LevelGeneration : MonoBehaviour {
 	List<Vector2> takenPositions = new List<Vector2>();
 	int gridSizeX, gridSizeY, numberOfRooms = 10;
 	public GameObject roomWhiteObj;
+	// public ItemDatabase itemDatabase;
 	public Transform mapRoot;
 
 	private Dictionary<Vector2, GameObject> roomGameObjects = new Dictionary<Vector2, GameObject>();
@@ -19,6 +20,7 @@ public class LevelGeneration : MonoBehaviour {
 		}
 		gridSizeX = Mathf.RoundToInt(worldSize.x); //note: these are half-extents
 		gridSizeY = Mathf.RoundToInt(worldSize.y);
+		// itemDatabase.ResetAvailableItems();
 		CreateRooms(); //lays out the actual map
 		SetRoomDoors(); //assigns the doors where rooms would connect
 		DrawMap(); //instantiates objects to make up a map

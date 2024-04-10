@@ -1,0 +1,377 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 579937c00bef52049bc70b3b5b114b80, type: 3}
+  m_Name: MyItemDatabase
+  m_EditorClassIdentifier: 
+  items:
+  - itemName: Contract of Employment
+    itemID: 1
+    description: The weight of a 9-5..
+    itemSprite: {fileID: 21300000, guid: 99efd8f3a21972542a6941935d87380e, type: 3}
+    quality: 4
+    weight: 0.3
+    healthEffect: 0
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 3
+    damageMultiplier: 3
+    paperRateEffect: 0
+    rangeEffect: 0
+    paperSpeedEffect: 0
+    projectileSize: 4
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Paper Airplane
+    itemID: 2
+    description: How aerodynamic!
+    itemSprite: {fileID: 21300000, guid: 9e6b9b1e1444e6644b40998506567dc6, type: 3}
+    quality: 2
+    weight: 1
+    healthEffect: 0
+    speedEffect: 1
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 1
+    damageMultiplier: 1
+    paperRateEffect: 1
+    rangeEffect: 5
+    paperSpeedEffect: 5
+    projectileSize: 1
+    spectral: 1
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Leaky Pen
+    itemID: 3
+    description: Ink everywhere!
+    itemSprite: {fileID: 21300000, guid: 3b4e50fb94bdefc45bcb76c2d99d787b, type: 3}
+    quality: 3
+    weight: 0.5
+    healthEffect: 0
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 1
+    damageMultiplier: 1
+    paperRateEffect: 2
+    rangeEffect: 1
+    paperSpeedEffect: 3
+    projectileSize: 1
+    spectral: 1
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Caffeine Overdose
+    itemID: 4
+    description: All-nighter inbound
+    itemSprite: {fileID: 21300000, guid: c6f42063abaec8248bf083e1853aea18, type: 3}
+    quality: 3
+    weight: 1
+    healthEffect: -1
+    speedEffect: 20
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 0
+    damageMultiplier: 1
+    paperRateEffect: 2.5
+    rangeEffect: 0
+    paperSpeedEffect: 5
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Nothing
+    itemID: 5
+    description: Literally nothing.. look at my hands!
+    itemSprite: {fileID: 21300000, guid: 37c60ba7f06d3b742ac8c0a2b216eca0, type: 3}
+    quality: 0
+    weight: 1
+    healthEffect: 0
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 0
+    damageMultiplier: 1
+    paperRateEffect: 0
+    rangeEffect: 0
+    paperSpeedEffect: 0
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Staple Gun
+    itemID: 6
+    description: Bringing metal to a paper fight
+    itemSprite: {fileID: 21300000, guid: 4971c60f14732ed418caf805d6f2b47a, type: 3}
+    quality: 4
+    weight: 0.3
+    healthEffect: 0
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 3
+    damageMultiplier: 1
+    paperRateEffect: 4
+    rangeEffect: 2
+    paperSpeedEffect: 5
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Shred Bin
+    itemID: 7
+    description: This is getting everywhere
+    itemSprite: {fileID: 21300000, guid: 3fcb04ce7e5ebd84fa038a1afaf773a8, type: 3}
+    quality: 2
+    weight: 1
+    healthEffect: 0
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: -0.5
+    damageMultiplier: 1
+    paperRateEffect: 8
+    rangeEffect: -3
+    paperSpeedEffect: 10
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Works Cited Page
+    itemID: 8
+    description: Remember what's important
+    itemSprite: {fileID: 21300000, guid: 7bdf257f039d468408bcd2b39e069fff, type: 3}
+    quality: 2
+    weight: 1
+    healthEffect: 0
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 1
+    damageMultiplier: 1
+    paperRateEffect: 0
+    rangeEffect: 2
+    paperSpeedEffect: 0
+    projectileSize: 1
+    spectral: 0
+    honing: 1
+    projectileSprite: {fileID: 0}
+  - itemName: Love Note
+    itemID: 9
+    description: From your secret admirer.
+    itemSprite: {fileID: 21300000, guid: 8532801e53b2d7145aa1d7a30cb89457, type: 3}
+    quality: 4
+    weight: 0.3
+    healthEffect: 6
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 3
+    damageMultiplier: 2
+    paperRateEffect: 2
+    rangeEffect: 0
+    paperSpeedEffect: 0
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Rubber Band Ball
+    itemID: 10
+    description: Bouncy and unpredictable
+    itemSprite: {fileID: 21300000, guid: 3c3f54de9c15b254fac07e70c2881528, type: 3}
+    quality: 2
+    weight: 1
+    healthEffect: 0
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 1
+    damageMultiplier: 1
+    paperRateEffect: 0
+    rangeEffect: 1
+    paperSpeedEffect: 3
+    projectileSize: 2
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Correction Fluid
+    itemID: 11
+    description: Cover up the past
+    itemSprite: {fileID: 21300000, guid: 1a85d55818ab0f047a16861dd22d6047, type: 3}
+    quality: 2
+    weight: 1
+    healthEffect: 2
+    speedEffect: 5
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 0
+    damageMultiplier: 1
+    paperRateEffect: 0
+    rangeEffect: 0
+    paperSpeedEffect: 0
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Paperweight
+    itemID: 12
+    description: Heavy so don't drop it!
+    itemSprite: {fileID: 21300000, guid: def5385df1ce4ed4385b4d030dc0b5bc, type: 3}
+    quality: 3
+    weight: 0.5
+    healthEffect: 3
+    speedEffect: -7
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 4
+    damageMultiplier: 1
+    paperRateEffect: -0.5
+    rangeEffect: 0
+    paperSpeedEffect: -1
+    projectileSize: 2
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Small Notes
+    itemID: 13
+    description: Quick and efficient reminders
+    itemSprite: {fileID: 21300000, guid: a97268a5179a1a94e8e3d2b555f415b2, type: 3}
+    quality: 2
+    weight: 1
+    healthEffect: 0
+    speedEffect: 8
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 0
+    damageMultiplier: 1
+    paperRateEffect: 3
+    rangeEffect: 0
+    paperSpeedEffect: 5
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Agenda
+    itemID: 14
+    description: Arranges it all together
+    itemSprite: {fileID: 21300000, guid: 7c72e6e7cbb48e04b90f51834b513a5a, type: 3}
+    quality: 3
+    weight: 0.5
+    healthEffect: 0
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 3
+    damageMultiplier: 1
+    paperRateEffect: 1
+    rangeEffect: 3
+    paperSpeedEffect: 4
+    projectileSize: 2
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Inspirational Calendar
+    itemID: 15
+    description: It's a photo of a cat saying "hang in there!"
+    itemSprite: {fileID: 21300000, guid: 8cf866bc4bfa8cc4fa0c44cb08e3dcfe, type: 3}
+    quality: 4
+    weight: 0.3
+    healthEffect: 5
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 4
+    damageMultiplier: 1
+    paperRateEffect: 3
+    rangeEffect: 4
+    paperSpeedEffect: 2
+    projectileSize: 1
+    spectral: 1
+    honing: 1
+    projectileSprite: {fileID: 0}
+  - itemName: Abandoned Fruit Bowl
+    itemID: 16
+    description: Who ate all the bananas!?
+    itemSprite: {fileID: 21300000, guid: 1c07dd54b77d31a428d83ae58b010261, type: 3}
+    quality: 2
+    weight: 1
+    healthEffect: 3
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 0
+    damageMultiplier: 1
+    paperRateEffect: 0
+    rangeEffect: 0
+    paperSpeedEffect: 0
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Gas Station Pills
+    itemID: 17
+    description: The side effects are longer than everything else..
+    itemSprite: {fileID: 21300000, guid: 70034a508e720584583b509c4b78ff21, type: 3}
+    quality: 1
+    weight: 1
+    healthEffect: 2
+    speedEffect: 10
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 0
+    damageMultiplier: 1
+    paperRateEffect: 0
+    rangeEffect: 0
+    paperSpeedEffect: 0
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: Emergency Ramen
+    itemID: 18
+    description: '*Crunch* There''s no water'
+    itemSprite: {fileID: 21300000, guid: 57a6f2d6e4d77474e8cec00b85abd83f, type: 3}
+    quality: 2
+    weight: 1
+    healthEffect: 2
+    speedEffect: 0
+    flight: 0
+    playerSprite: {fileID: 0}
+    damageEffect: 0
+    damageMultiplier: 1
+    paperRateEffect: 0
+    rangeEffect: 0
+    paperSpeedEffect: 0
+    projectileSize: 1
+    spectral: 0
+    honing: 0
+    projectileSprite: {fileID: 0}
+  - itemName: NewFinalFinalDraft (1)
+    itemID: 19
+    description: Just On Time...
+    itemSprite: {fileID: 21300000, guid: a1a067ee123b3164291760b125ce13de, type: 3}
+    quality: 4
+    weight: 0.3
+    healthEffect: 8
+    speedEffect: 10
+    flight: 1
+    playerSprite: {fileID: 0}
+    damageEffect: 4
+    damageMultiplier: 2
+    paperRateEffect: 10
+    rangeEffect: 0
+    paperSpeedEffect: 0
+    projectileSize: 1
+    spectral: 1
+    honing: 1
+    projectileSprite: {fileID: 0}
+  availableItemIDs: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
