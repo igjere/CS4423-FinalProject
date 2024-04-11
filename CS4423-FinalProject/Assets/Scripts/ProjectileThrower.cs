@@ -66,13 +66,15 @@ public class ProjectileThrower : MonoBehaviour
     }
 
     // Update attributes based on item effects
-    public void UpdateProjectileAttributes(float newDamage, float newFireRate, bool newSpectral, bool newHoming, float newSize)
+    public void UpdateProjectileAttributes(float newDamage, float newFireRate, float newRange, float newSpeed, bool newSpectral, bool newHoming, float newSize)
     {
         damage = newDamage;
         fireRate = newFireRate;
         spectral = newSpectral;
         homing = newHoming;
         projectileSize = newSize;
+        paperRange = newRange;
+        speed = newSpeed;
     }
 
     public void TryLaunch(Vector3 direction)
@@ -96,7 +98,10 @@ public class ProjectileThrower : MonoBehaviour
             projectileScript.SetAttributes(damage, spectral, homing, projectileSize);
         }
         newProjectile.GetComponent<Rigidbody2D>().velocity = direction * speed;
-        Destroy(newProjectile, paperRange);
+        float ttl = paperRange / speed;
+        Debug.Log($"{ttl}, = {paperRange} / {speed}");
+        Destroy(newProjectile, ttl);
+        //Destroy(newProjectile, paperRange);
     }
     // Rest of your existing code...
     public float GetCurrentDamage() => damage;

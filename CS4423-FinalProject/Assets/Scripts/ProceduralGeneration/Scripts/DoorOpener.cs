@@ -27,6 +27,7 @@ public class DoorOpener : MonoBehaviour
 
     IEnumerator DoorInteractionCooldown()
     {
+        
         isDoorInteractionAvailable = false;
         SetAllDoorsColor(false); // Set to cooldown color immediately
 
@@ -34,11 +35,27 @@ public class DoorOpener : MonoBehaviour
 
         isDoorInteractionAvailable = true;
         // After cooldown, recheck the enemy status in the room instead of just setting to green
-        RoomInstance currentRoom = GetComponentInParent<RoomInstance>();
-        if (currentRoom != null)
+        Debug.Log("r");
+        /* RoomInstance currentRoom = GetComponentInParent<RoomInstance>();
+        if (currentRoom != null && currentRoom.enemiesInRoom.Count == 0)
         {
-            SetDoorColorBasedOnEnemies(currentRoom); // This now depends on the enemy count
-        }
+            Debug.Log("rr");
+            SetAllDoorsColor(true); // Assuming true indicates the door can be interacted with
+        } */
+        PlayerLocation playerLocation = GetComponent<PlayerLocation>();
+        if (playerLocation != null && playerLocation.currentRoomInstance != null)
+            {
+                // Log PlayerLocation and currentRoomInstance for debugging
+                Debug.Log($"PlayerLocation is not null. Current room instance: {playerLocation.currentRoomInstance.name}, Grid Position: {playerLocation.currentRoomInstance.gridPos}");
+
+                // Use the room instance tracked by PlayerLocation after cooldown
+                SetDoorColorBasedOnEnemies(playerLocation.currentRoomInstance);
+            }
+            else
+            {
+                // Log when PlayerLocation or currentRoomInstance is null
+                Debug.Log("PlayerLocation is null or currentRoomInstance is not set.");
+            }
     }
     void SetAllDoorsColor(bool interactionAvailable)
     {
@@ -81,7 +98,7 @@ public class DoorOpener : MonoBehaviour
                 string doorIdentity = GetDoorIdentity(positionDifference, room);
 
                 // Invoke event or handle door interaction based on doorIdentity
-                Debug.Log("Door Identity: " + doorIdentity);
+                // Debug.Log("Door Identity: " + doorIdentity);
                 // HandleDoorInteraction(doorIdentity, room);
                 // StartCoroutine(DoorInteractionCooldown());
                 if (room.enemiesInRoom.Count == 0) // Check if there are no enemies left in the room
@@ -91,7 +108,7 @@ public class DoorOpener : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Cannot use the door, enemies present.");
+                    //Debug.Log("Cannot use the door, enemies present.");
                 }
             }
         }
@@ -150,7 +167,19 @@ public class DoorOpener : MonoBehaviour
         Vector2 gridOffset = Vector2.zero;
         Vector2 nextRoomGridPos = currentRoom.gridPos;
         
-
+        PlayerLocation playerLocation = GetComponent<PlayerLocation>();
+        if (playerLocation != null)
+        {
+            Vector2 gridChange = Vector2.zero;
+            switch (doorIdentity)
+            {
+                case "Top": gridChange = new Vector2(0, 1); break;
+                case "Bottom": gridChange = new Vector2(0, -1); break;
+                case "Left": gridChange = new Vector2(-1, 0); break;
+                case "Right": gridChange = new Vector2(1, 0); break;
+            }
+            playerLocation.UpdateGridPos(gridChange);
+        }
         switch(doorIdentity){
             case "Top":
                 gridOffset = new Vector2(0, 8);

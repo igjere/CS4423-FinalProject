@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[CreateAssetMenu(fileName = "NewItemDatabase", menuName = "Inventory/ItemDatabase")]
+[CreateAssetMenu(fileName = "MyItemDatabase", menuName = "Inventory/ItemDatabase")]
 public class ItemDatabase : ScriptableObject {
     private static ItemDatabase _instance;
     public static ItemDatabase Instance

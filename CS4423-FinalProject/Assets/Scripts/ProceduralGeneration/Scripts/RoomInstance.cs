@@ -20,11 +20,15 @@ public class RoomInstance : MonoBehaviour {
 	[SerializeField]
 	GameObject coinPrefab;
 	[SerializeField]
+	GameObject spikePrefab;
+	[SerializeField]
 	GameObject trashcanPrefab;
 	[SerializeField]
 	GameObject[] itemPrefabs;
 
-	List<Vector3> validSpawnPoints = new List<Vector3>();
+	// List<Vector3> validSpawnPoints = new List<Vector3>();
+	List<Vector3> validEnemySpawnPoints = new List<Vector3>();
+    List<Vector3> validCoinSpawnPoints = new List<Vector3>();
 	public List<GameObject> enemiesInRoom = new List<GameObject>();
 
 	public void Setup(Texture2D _tex, Vector2 _gridPos, int _type, bool _doorTop, bool _doorBot, bool _doorLeft, bool _doorRight){
@@ -35,6 +39,20 @@ public class RoomInstance : MonoBehaviour {
 		doorBot = _doorBot;
 		doorLeft = _doorLeft;
 		doorRight = _doorRight;
+		List<string> doors = new List<string>();
+		if (doorTop) doors.Add("top");
+		if (doorBot) doors.Add("bottom");
+		if (doorLeft) doors.Add("left");
+		if (doorRight) doors.Add("right");
+
+		// Join the list into a single string
+		string doorDescriptions = string.Join(", ", doors);
+		if (doorDescriptions.Length > 0) {
+			doorDescriptions = " with a door on the " + doorDescriptions;
+		}
+
+    // Log the grid position along with door information
+    Debug.Log($"Setting up RoomInstance at grid position: {gridPos} with type: {type}{doorDescriptions}");
 		MakeDoors();
 		GenerateRoomTiles();
 		if (type == 1) {
@@ -43,6 +61,7 @@ public class RoomInstance : MonoBehaviour {
     	}
 		SpawnEnemies();
 		SpawnCoins();
+		SpawnSpikes();
 	}
 	void MakeDoors(){
 		//top door, get position then spawn
@@ -68,10 +87,10 @@ public class RoomInstance : MonoBehaviour {
 			// Instantiate(doorSpawn, spawnPos, Quaternion.identity).transform.parent = transform;
 			GameObject instantiatedDoor = Instantiate(doorSpawn, spawnPos, Quaternion.identity);
         	instantiatedDoor.transform.parent = transform;
-			Debug.Log($"Door placed at position {spawnPos}. Door type: {(door ? doorSpawn.name.Replace("(Clone)", "").Trim() : "Wall")}"); 
+			// Debug.Log($"Door placed at position {spawnPos}. Door type: {(door ? doorSpawn.name.Replace("(Clone)", "").Trim() : "Wall")}"); 
 			Vector3 relativePosition = spawnPos - transform.position;
 			string doorOrientation = GetDoorOrientation(relativePosition);
-			Debug.Log($"Door placed at position {spawnPos}. Door orientation: {doorOrientation}");
+			// Debug.Log($"Door placed at position {spawnPos}. Door orientation: {doorOrientation}");
 			PlaceWallTilesForDoor(spawnPos, doorOrientation);
 		}else{
 			Instantiate(wallTile, spawnPos, Quaternion.identity).transform.parent = transform;
@@ -390,15 +409,18 @@ public class RoomInstance : MonoBehaviour {
 			}
 		}
 	}
-	void GenerateTile(int x, int y){
-		Color pixelColor = tex.GetPixel(x,y);
-		//skip clear spaces in texture
-		if (pixelColor.a == 0){
-			if(x != tex.width-1 && x > 1 && y != tex.height-1 && y > 1){
-				Vector3 spawnPos = positionFromTileGrid(x, y);
-				validSpawnPoints.Add(spawnPos);
-			}
-			return;
+	void GenerateTile(int x, int y) {
+        Color pixelColor = tex.GetPixel(x, y);
+        if (pixelColor.a == 0) {
+            Vector3 spawnPos = positionFromTileGrid(x, y);
+            // Determine if within centered range for enemies
+            if (spawnPos.x >= transform.position.x - 32 && spawnPos.x <= transform.position.x + 32 && spawnPos.y >= transform.position.y - 16 && spawnPos.y <= transform.position.y + 16) {
+                validEnemySpawnPoints.Add(spawnPos);
+            } else {
+                // Otherwise, it's a valid coin spawn
+                validCoinSpawnPoints.Add(spawnPos);
+            }
+            return;
 		}
 		//find the color to math the pixel
 		foreach (ColorToGameObject mapping in mappings){
@@ -423,38 +445,56 @@ public class RoomInstance : MonoBehaviour {
 		Instantiate(trashcanPrefab, centerPos, Quaternion.identity, transform);
 	}
 	void SpawnEnemies() {
-		 if (type == 1) return;
-		int enemiesToSpawn = Random.Range(3, 6); // Spawns 3 to 6 enemies
-		for (int i = 0; i < enemiesToSpawn; i++) {
-			if(validSpawnPoints.Count > 0) {
-				int spawnIndex = Random.Range(0, validSpawnPoints.Count);
-				Vector3 spawnPos = validSpawnPoints[spawnIndex];
-				GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
-				GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity, transform);
-				Creature enemyCreature = enemyInstance.GetComponent<Creature>();
-				if (enemyCreature != null) {
-					enemyCreature.SetRoomInstance(this);
-				}
-				enemiesInRoom.Add(enemyInstance);
-				// GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity, transform);
-				// CreatureAI aiComponent = enemyInstance.AddComponent<CreatureAI>();
-				// Optionally remove the spawn point from the list to avoid spawning multiple enemies in the same spot
-				validSpawnPoints.RemoveAt(spawnIndex);
-			}
-		}
-	}
+        if (type == 1) return;
+        int enemiesToSpawn = Random.Range(3, 6); // Spawns 3 to 6 enemies
+        for (int i = 0; i < enemiesToSpawn; i++) {
+            if (validEnemySpawnPoints.Count > 0) {
+                int spawnIndex = Random.Range(0, validEnemySpawnPoints.Count);
+                Vector3 spawnPos = validEnemySpawnPoints[spawnIndex];
+                GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+                GameObject enemyInstance = Instantiate(enemyPrefab, spawnPos, Quaternion.identity, transform);
+                Creature enemyCreature = enemyInstance.GetComponent<Creature>();
+                if (enemyCreature != null) {
+                    enemyCreature.SetRoomInstance(this);
+                }
+                enemiesInRoom.Add(enemyInstance);
+                validEnemySpawnPoints.RemoveAt(spawnIndex);
+            }
+        }
+		Debug.Log($"Room at grid position ({gridPos.x}, {gridPos.y}) has {enemiesInRoom.Count} enemies.");
+    }
 	void SpawnCoins() {
-		if (type == 1) return;
-		int coinsToSpawn = Random.Range(1, 3); 
-		for (int i = 0; i < coinsToSpawn; i++) {
-			if(validSpawnPoints.Count > 0) {
-				int spawnIndex = Random.Range(0, validSpawnPoints.Count);
-				Vector3 spawnPos = validSpawnPoints[spawnIndex];
-				Instantiate(coinPrefab, spawnPos, Quaternion.identity, transform);
-				validSpawnPoints.RemoveAt(spawnIndex);
-			}
+        if (type == 1) return;
+        int coinsToSpawn = Random.Range(1, 3);
+        for (int i = 0; i < coinsToSpawn; i++) {
+            if (validCoinSpawnPoints.Count > 0) {
+                int spawnIndex = Random.Range(0, validCoinSpawnPoints.Count);
+                Vector3 spawnPos = validCoinSpawnPoints[spawnIndex];
+                Instantiate(coinPrefab, spawnPos, Quaternion.identity, transform);
+                validCoinSpawnPoints.RemoveAt(spawnIndex);
+            }
+        }
+    }
+	void SpawnSpikes() {
+        if (type == 1) return;
+        int spikesToSpawn = Random.Range(1, 3);
+        for (int i = 0; i < spikesToSpawn; i++) {
+            if (validCoinSpawnPoints.Count > 0) {
+                int spawnIndex = Random.Range(0, validCoinSpawnPoints.Count);
+                Vector3 spawnPos = validCoinSpawnPoints[spawnIndex];
+                Instantiate(spikePrefab, spawnPos, Quaternion.identity, transform);
+                validCoinSpawnPoints.RemoveAt(spawnIndex);
+            }
+        }
+    }
+	/* public void UpdateDoorColors()
+	{
+		DoorOpener[] doorOpeners = GetComponentsInChildren<DoorOpener>();
+		foreach (var doorOpener in doorOpeners)
+		{
+			doorOpener.SetDoorColorBasedOnEnemies(this);
 		}
-	}
+	} */
 	public void CheckAndUpdateDoors()
 	{
 		// This method would loop through each door in the room and update its color based on enemy count
@@ -466,6 +506,8 @@ public class RoomInstance : MonoBehaviour {
 	}
 	public void OnPlayerEntered()
 	{
+		// UpdateDoorColors();
+		CheckAndUpdateDoors();
 		MapSpriteSelector mapIcon = GetComponentInChildren<MapSpriteSelector>();
 		if (mapIcon != null)
 		{

@@ -18,7 +18,7 @@ MonoBehaviour:
     description: The weight of a 9-5..
     itemSprite: {fileID: 21300000, guid: 99efd8f3a21972542a6941935d87380e, type: 3}
     quality: 4
-    weight: 0.3
+    weight: 1
     healthEffect: 0
     speedEffect: 0
     flight: 0
@@ -28,10 +28,11 @@ MonoBehaviour:
     paperRateEffect: 0
     rangeEffect: 0
     paperSpeedEffect: 0
-    projectileSize: 4
-    spectral: 0
+    projectileSize: 3
+    spectral: 1
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Paper Airplane
     itemID: 2
     description: How aerodynamic!
@@ -51,6 +52,7 @@ MonoBehaviour:
     spectral: 1
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Leaky Pen
     itemID: 3
     description: Ink everywhere!
@@ -70,6 +72,7 @@ MonoBehaviour:
     spectral: 1
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Caffeine Overdose
     itemID: 4
     description: All-nighter inbound
@@ -89,6 +92,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Nothing
     itemID: 5
     description: Literally nothing.. look at my hands!
@@ -108,6 +112,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Staple Gun
     itemID: 6
     description: Bringing metal to a paper fight
@@ -127,6 +132,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Shred Bin
     itemID: 7
     description: This is getting everywhere
@@ -146,6 +152,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Works Cited Page
     itemID: 8
     description: Remember what's important
@@ -165,6 +172,7 @@ MonoBehaviour:
     spectral: 0
     honing: 1
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Love Note
     itemID: 9
     description: From your secret admirer.
@@ -184,6 +192,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Rubber Band Ball
     itemID: 10
     description: Bouncy and unpredictable
@@ -203,6 +212,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Correction Fluid
     itemID: 11
     description: Cover up the past
@@ -222,6 +232,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Paperweight
     itemID: 12
     description: Heavy so don't drop it!
@@ -241,6 +252,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Small Notes
     itemID: 13
     description: Quick and efficient reminders
@@ -260,6 +272,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Agenda
     itemID: 14
     description: Arranges it all together
@@ -279,6 +292,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Inspirational Calendar
     itemID: 15
     description: It's a photo of a cat saying "hang in there!"
@@ -298,6 +312,7 @@ MonoBehaviour:
     spectral: 1
     honing: 1
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Abandoned Fruit Bowl
     itemID: 16
     description: Who ate all the bananas!?
@@ -317,6 +332,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Gas Station Pills
     itemID: 17
     description: The side effects are longer than everything else..
@@ -336,6 +352,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: Emergency Ramen
     itemID: 18
     description: '*Crunch* There''s no water'
@@ -355,6 +372,7 @@ MonoBehaviour:
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
+    inventoryDisplay: {fileID: 0}
   - itemName: NewFinalFinalDraft (1)
     itemID: 19
     description: Just On Time...
@@ -374,4 +392,5 @@ MonoBehaviour:
     spectral: 1
     honing: 1
     projectileSprite: {fileID: 0}
-  availableItemIDs: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
+    inventoryDisplay: {fileID: 0}
+  availableItemIDs: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000e0000000f00000010000000110000001200000013000000

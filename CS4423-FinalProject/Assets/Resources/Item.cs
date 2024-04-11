@@ -29,6 +29,8 @@ public class Item {
     public bool honing;
     public Sprite projectileSprite;
 
+    public InventoryDisplay inventoryDisplay;
+
     public void ApplyEffect(Creature player) {
         Debug.Log($"Applying effect of {itemName} to the player.");
 
@@ -54,6 +56,8 @@ public class Item {
             thrower.UpdateProjectileAttributes(
                 this.damageEffect + thrower.damage * this.damageMultiplier, // Example calculation
                 thrower.fireRate + this.paperRateEffect,
+                this.rangeEffect + thrower.paperRange,
+                this.paperSpeedEffect + thrower.speed,
                 this.spectral,
                 this.honing,
                 this.projectileSize
@@ -61,5 +65,14 @@ public class Item {
         }
 
         // Apply any other effects your items might have
+        //inventoryDisplay.AddItem(itemSprite);
+        /* if(inventoryDisplay != null) {
+            inventoryDisplay.AddItem(itemSprite);
+        } else {
+            Debug.LogError("InventoryDisplay not set for the item.");
+        } */
     }
+    /* public void SetInventoryDisplay(InventoryDisplay inventoryDisplay) {
+        this.inventoryDisplay = inventoryDisplay;
+    } */
 }

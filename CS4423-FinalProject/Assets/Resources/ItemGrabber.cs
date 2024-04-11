@@ -8,6 +8,8 @@ public class ItemGrabber : MonoBehaviour
     public UnityEvent onItemPickup;
     public Creature player;
     public ItemDisplay itemDisplay;
+    public InventoryDisplay inventoryDisplay;
+    public bool firstItem = true;
     // public Text itemNameText; // Assign in Inspector
     // public Text itemDescriptionText; // Assign in Inspector
     // public TextMeshProUGUI itemNameText; // Reference to the TextMeshProUGUI component
@@ -57,6 +59,16 @@ public class ItemGrabber : MonoBehaviour
 
             // Additional logic for displaying item name and description
             ShowItemNameAndDescription(item.itemName, item.description);
+            // item.SetInventoryDisplay(inventoryDisplay);
+            // ItemPickupManager pickupManager = FindObjectOfType<ItemPickupManager>(); // Find the item pickup manager in the scene
+            if(firstItem)
+            {
+                inventoryDisplay.OnItemPickedUp(item.itemSprite); // yourItemSprite is the sprite of the item that was picked up
+                firstItem = false;
+            }
+            else{ 
+                inventoryDisplay.AddItem(item.itemSprite);
+            }  
 
             Destroy(other.gameObject); // Assuming you want to remove the bookshelf/item after pickup
         }

@@ -46,39 +46,34 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        // Enemy collision
         if (other.gameObject.CompareTag("Enemy"))
         {
             Creature enemy = other.GetComponent<Creature>();
             if (enemy != null)
             {
                 GetComponent<AudioSource>().Play();
-                enemy.GiveDamage(damage); // Ensure GiveDamage can accept a damage parameter
-                Destroy(this.gameObject);
+                enemy.GiveDamage(damage); // Apply damage
+                Destroy(gameObject); // Destroy the projectile after hitting an enemy
             }
         }
-        // Additional collision handling...
-        if(other.gameObject.tag == "Wall"){
-            // Destroy(other.gameObject);
-            Destroy(this.gameObject);
+        // Handle spectral behavior
+        else if (!isSpectral && (other.gameObject.tag == "Wall" || other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Door"))
+        {
+            // If the projectile is not spectral, destroy it when colliding with wall, obstacle, or door
+            Destroy(gameObject);
         }
-        if(other.gameObject.tag == "Obstacle"){
-            // Destroy(other.gameObject);
-            Destroy(this.gameObject);
-        }
-        if(other.gameObject.tag == "Door"){
-            // Destroy(other.gameObject);
-            Destroy(this.gameObject);
-        }
+        // No need to destroy the projectile if it's spectral and hits a wall, obstacle, or door
     }
     
     void Update()
     {
-        if (isHoming)
+        /* if (isHoming)
         {
             // Homing logic here
         }
         if (isSpectral){
 
-        }
+        } */
     }
 }

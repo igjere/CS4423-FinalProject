@@ -275,10 +275,30 @@ public class Creature : MonoBehaviour
         }
         else
         {
+            StartCoroutine(FlickerEffect());
             // Debug.Log(creatureName + " takes " + damageAmount + " damage, " + health + " health remaining.");
             // StartCoroutine(BecomeTemporarilyInvincible()); // Start invincibility frames
         }
     }
+     private IEnumerator FlickerEffect()
+        {
+            Color originalColor = body.GetComponent<SpriteRenderer>().color;
+            Color brighterColor = originalColor + new Color(0.6f, 0.6f, 0.6f, 0); // Add to the RGB values to lighten the color
+
+            // Ensure the color values do not exceed 1
+            brighterColor.r = Mathf.Clamp(brighterColor.r, 0, 1);
+            brighterColor.g = Mathf.Clamp(brighterColor.g, 0, 1);
+            brighterColor.b = Mathf.Clamp(brighterColor.b, 0, 1);
+
+            // Switch to the brighter color
+            body.GetComponent<SpriteRenderer>().color = brighterColor;
+
+            // Wait for 0.1 seconds
+            yield return new WaitForSeconds(0.1f);
+
+            // Revert to the original color
+            body.GetComponent<SpriteRenderer>().color = originalColor;
+        }
 
     /* TODO: 
        Implement functions for adding to health and other stats for items

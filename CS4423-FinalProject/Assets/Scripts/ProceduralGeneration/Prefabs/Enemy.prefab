@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b59b642c7c1410346b1e13dfdc77f94d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 1
   speed: 18
   jumpForce: 15
   currentHealth: 5
@@ -92,7 +93,7 @@ MonoBehaviour:
   obstacles:
     serializedVersion: 2
     m_Bits: 64
-  sightDistance: 50
+  sightDistance: 90
   gridSize: 10
 --- !u!50 &3449612063556998752
 Rigidbody2D:
@@ -140,6 +141,7 @@ MonoBehaviour:
   damage: 1
   spectral: 0
   homing: 0
+  projectileSize: 1
 --- !u!70 &6774782581203387882
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
