@@ -52,7 +52,7 @@ public class RoomInstance : MonoBehaviour {
 		}
 
     // Log the grid position along with door information
-    Debug.Log($"Setting up RoomInstance at grid position: {gridPos} with type: {type}{doorDescriptions}");
+    //Debug.Log($"Setting up RoomInstance at grid position: {gridPos} with type: {type}{doorDescriptions}");
 		MakeDoors();
 		GenerateRoomTiles();
 		if (type == 1) {
@@ -461,7 +461,7 @@ public class RoomInstance : MonoBehaviour {
                 validEnemySpawnPoints.RemoveAt(spawnIndex);
             }
         }
-		Debug.Log($"Room at grid position ({gridPos.x}, {gridPos.y}) has {enemiesInRoom.Count} enemies.");
+		// Debug.Log($"Room at grid position ({gridPos.x}, {gridPos.y}) has {enemiesInRoom.Count} enemies.");
     }
 	void SpawnCoins() {
         if (type == 1) return;

@@ -46,7 +46,7 @@ public class DoorOpener : MonoBehaviour
         if (playerLocation != null && playerLocation.currentRoomInstance != null)
             {
                 // Log PlayerLocation and currentRoomInstance for debugging
-                Debug.Log($"PlayerLocation is not null. Current room instance: {playerLocation.currentRoomInstance.name}, Grid Position: {playerLocation.currentRoomInstance.gridPos}");
+                //Debug.Log($"PlayerLocation is not null. Current room instance: {playerLocation.currentRoomInstance.name}, Grid Position: {playerLocation.currentRoomInstance.gridPos}");
 
                 // Use the room instance tracked by PlayerLocation after cooldown
                 SetDoorColorBasedOnEnemies(playerLocation.currentRoomInstance);

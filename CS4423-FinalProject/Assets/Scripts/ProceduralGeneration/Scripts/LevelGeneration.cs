@@ -6,7 +6,7 @@ public class LevelGeneration : MonoBehaviour {
 	Vector2 worldSize = new Vector2(4,4);
 	public Room[,] rooms;
 	List<Vector2> takenPositions = new List<Vector2>();
-	int gridSizeX, gridSizeY, numberOfRooms = 10;
+	int gridSizeX, gridSizeY, numberOfRooms = 13;
 	public GameObject roomWhiteObj;
 	// public ItemDatabase itemDatabase;
 	public Transform mapRoot;
@@ -25,7 +25,9 @@ public class LevelGeneration : MonoBehaviour {
 		SetRoomDoors(); //assigns the doors where rooms would connect
 		DrawMap(); //instantiates objects to make up a map
 		GetComponent<SheetAssigner>().Assign(rooms); //passes room info to another script which handles generatating the level geometry
+		// UpdateSpecialRoomColors();
 		// AssignRoomNeighbors();
+		//DrawMap(); //instantiates objects to make up a map
 
 		// SetStartingRoomForPlayer();
 	}
@@ -303,5 +305,22 @@ public class LevelGeneration : MonoBehaviour {
 		roomGameObjects[newRoom] = newRoomObj;
 		currentRoomSprite = newRoomObj;
 	}
+	/* public void UpdateSpecialRoomColors() {
+			foreach (var kvp in roomGameObjects) {
+				var roomPos = kvp.Key;
+				var roomObj = kvp.Value;
+
+				Room room = rooms[(int)roomPos.x + gridSizeX, (int)roomPos.y + gridSizeY];
+				if (room != null) {
+					MapSpriteSelector mapSpriteSelector = roomObj.GetComponent<MapSpriteSelector>();
+					if (mapSpriteSelector != null) {
+						// Here we directly set the room type which the MapSpriteSelector
+						// uses to determine the color
+						mapSpriteSelector.type = room.type++;
+						mapSpriteSelector.UpdateColor(); // Ensure MapSpriteSelector's UpdateColor method uses the 'type' to set the color
+					}
+				}
+			}
+	} */
 
 }

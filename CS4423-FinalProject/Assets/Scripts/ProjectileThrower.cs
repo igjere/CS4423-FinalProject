@@ -99,7 +99,7 @@ public class ProjectileThrower : MonoBehaviour
         }
         newProjectile.GetComponent<Rigidbody2D>().velocity = direction * speed;
         float ttl = paperRange / speed;
-        Debug.Log($"{ttl}, = {paperRange} / {speed}");
+        // Debug.Log($"{ttl}, = {paperRange} / {speed}");
         Destroy(newProjectile, ttl);
         //Destroy(newProjectile, paperRange);
     }

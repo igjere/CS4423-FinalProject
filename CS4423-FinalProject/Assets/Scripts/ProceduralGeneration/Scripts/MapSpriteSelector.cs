@@ -9,7 +9,7 @@ public class MapSpriteSelector : MonoBehaviour {
 			spULD, spRUL, spDRU, spLDR, spUDRL;
 	public bool up, down, left, right;
 	public int type; // 0: normal, 1: enter
-	public Color normalColor, enterColor, currentRoomPlayerColor;
+	public Color normalColor, enterColor, currentRoomPlayerColor, bossRoomColor, itemRoomColor, shopRoomColor;
 	Color mainColor;
 	public SpriteRenderer rend;
 	void Awake() {
@@ -91,12 +91,26 @@ public class MapSpriteSelector : MonoBehaviour {
 		}else if (type == 1){
 			mainColor = enterColor;
 			rend.color = mainColor;
-		}else if(type == 2){
+		}
+		else if(type == 2){
 			mainColor = currentRoomPlayerColor;
 			rend.color = mainColor;
 			rend.color = mainColor;
 			rend.sortingOrder = 1;
 		}
+
+		/* else if (type == 3){
+			mainColor = itemRoomColor;
+			rend.color = mainColor;
+		}
+		else if (type == 4){
+			mainColor = shopRoomColor;
+			rend.color = mainColor;
+		}
+		else if (type == 6){
+			mainColor = bossRoomColor;
+			rend.color = mainColor;
+		} */
 		
 	}
 	public void UpdateColor() {
