@@ -57,6 +57,15 @@ public class Projectile : MonoBehaviour
                 Destroy(gameObject); // Destroy the projectile after hitting an enemy
             }
         }
+        else if (other.gameObject.CompareTag("Boss")){
+            Creature enemy = other.GetComponent<Creature>();
+            if (enemy != null)
+            {
+                GetComponent<AudioSource>().Play();
+                enemy.GiveDamage(1f); // Apply damage
+                Destroy(gameObject); // Destroy the projectile after hitting an enemy
+            }
+        }
         // Handle spectral behavior
         else if (!isSpectral && (other.gameObject.tag == "Wall" || other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Door"))
         {

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6774782581203387882}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,8 +52,8 @@ MonoBehaviour:
   isAlive: 1
   speed: 20
   jumpForce: 15
-  currentHealth: 50
-  maxHealth: 50
+  currentHealth: 75
+  maxHealth: 75
   stamina: 3
   isInvincible: 0
   invincibilityDurationSeconds: 5
@@ -94,8 +94,8 @@ MonoBehaviour:
   obstacles:
     serializedVersion: 2
     m_Bits: 64
-  sightDistance: 300
-  gridSize: 50
+  sightDistance: 150
+  gridSize: 20
 --- !u!50 &3449612063556998752
 Rigidbody2D:
   serializedVersion: 4
