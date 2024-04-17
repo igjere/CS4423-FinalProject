@@ -9,15 +9,42 @@ public class SheetAssigner : MonoBehaviour {
     public Vector2 gutterSize = new Vector2(16 * 9, 16 * 4);
     private List<RoomInstance> roomInstances = new List<RoomInstance>();
 
-    private List<RoomInstance> potentialItemAndShopRooms = new List<RoomInstance>();
-    private List<RoomInstance> potentialBossRooms = new List<RoomInstance>();
+    private List<Room> potentialItemAndShopRooms = new List<Room>();
+    private List<Room> potentialBossRooms = new List<Room>();
 
     public void Assign(Room[,] rooms) {
+		// First clear previous potential rooms lists
+    	potentialItemAndShopRooms.Clear();
+    	potentialBossRooms.Clear();
 		foreach (Room room in rooms) {
 			if (room == null) {
 				continue;
 			}
+			// Calculate number of doors for the room
+			int numDoors = 0;
+			if (room.doorTop) numDoors++;
+			if (room.doorBot) numDoors++;
+			if (room.doorLeft) numDoors++;
+			if (room.doorRight) numDoors++;
 
+			if (room.type == 0) { // Ensure it's a normal room
+				if (numDoors == 1) {
+					// Potential boss room
+					potentialBossRooms.Add(room);
+				} else {
+					// Potential item or shop room
+					potentialItemAndShopRooms.Add(room);
+				}
+			}
+		}
+
+		// Assign special room types
+		AssignSpecialRooms(rooms);
+
+		foreach (Room room in rooms) {
+			if (room == null) {
+				continue;
+			}
 			Vector3 pos = new Vector3(room.gridPos.x * (roomDimensions.x + gutterSize.x), room.gridPos.y * (roomDimensions.y + gutterSize.y), 0);
 			RoomInstance myRoom = Instantiate(RoomObj, pos, Quaternion.identity).GetComponent<RoomInstance>();
 
@@ -30,30 +57,16 @@ public class SheetAssigner : MonoBehaviour {
 					potentialItemAndShopRooms.Add(myRoom); // All other normal rooms are potential item or shop rooms
 				}
 			} */
-
-			myRoom.Setup(sheetsNormal[Random.Range(0, sheetsNormal.Length)], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
+			if (room.type != 0){
+				myRoom.Setup(sheetsNormal[5], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
+			}
+			else{
+				myRoom.Setup(sheetsNormal[Random.Range(0, sheetsNormal.Length)], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
+			}
 			roomInstances.Add(myRoom);
-			// Calculate number of doors for the room
-			int numDoors = 0;
-			if (room.doorTop) numDoors++;
-			if (room.doorBot) numDoors++;
-			if (room.doorLeft) numDoors++;
-			if (room.doorRight) numDoors++;
 
 			// Decide whether it's a potential boss room or item/shop room based on the number of doors
-			if (room.type == 0) { // Ensure it's a normal room
-				if (numDoors == 1) {
-					// Potential boss room
-					potentialBossRooms.Add(myRoom);
-				} else {
-					// Potential item or shop room
-					potentialItemAndShopRooms.Add(myRoom);
-				}
-			}
 		}
-
-		// Assign special room types
-		AssignSpecialRooms();
 	}
 
 	public List<RoomInstance> GetAllRoomInstances() {
@@ -69,18 +82,102 @@ public class SheetAssigner : MonoBehaviour {
 		return null; // Return null if no matching room is found
 	}
 
-	private void AssignSpecialRooms() {
+	/* private void AssignSpecialRooms() {
 		if (potentialBossRooms.Count > 0) {
-			int index = Random.Range(0, potentialBossRooms.Count);
-			potentialBossRooms[index].type = 5; // Assign as Boss room
-			Debug.Log($"Assigned Boss Room at {potentialBossRooms[index].gridPos}");
+			foreach (Room room in potentialBossRooms) {
+				room.type = 5;  // Confirm Boss room
+				// Debug.Log($"Assigned Boss Room at {room.gridPos}");
+        	}
 		}
 
 		if (potentialItemAndShopRooms.Count > 0) {
-			AssignRoomTypeRandomly(2); // Item room
-			AssignRoomTypeRandomly(3); // Shop
+			 foreach (Room room in potentialItemAndShopRooms) {
+				int roomType = (Random.value < 0.5) ? 2 : 3;  // Randomly choose between item (2) and shop (3)
+				room.type = roomType;
+				// Debug.Log($"Assigned {roomType} at {room.gridPos}");
+			}
+		}
+	} */
+	private void AssignSpecialRooms(Room[,] rooms) {
+		bool bossAssigned = false;
+		bool itemAssigned = false;
+		bool shopAssigned = false;
+
+		Vector2 bossRoomPos = Vector2.zero;
+		Vector2 itemRoomPos = Vector2.zero;
+		Vector2 shopRoomPos = Vector2.zero;
+		Vector2 spawnRoomPos = Vector2.zero;
+
+		// Assign Boss Room
+		foreach (Room room in potentialBossRooms) {
+			if (!bossAssigned && room.type == 0 && NotNeighborOf(room, spawnRoomPos)) {
+				room.type = 5;  // Assign as Boss room
+				bossAssigned = true;
+				bossRoomPos = room.gridPos;
+				Debug.Log($"Assigned Boss Room at {room.gridPos}");
+				break;
+			}
+		}
+
+		// Remove the boss room from potentialItemAndShopRooms to avoid double assignment
+		potentialItemAndShopRooms.RemoveAll(r => r.type == 5);
+
+		// Assign Item Room
+		foreach (Room room in potentialItemAndShopRooms) {
+			if (!itemAssigned && room.type == 0 && NotNeighborOf(room, bossRoomPos) && NotNeighborOf(room, spawnRoomPos)) {
+				room.type = 2;  // Assign as Item room
+				itemAssigned = true;
+				itemRoomPos = room.gridPos;
+				Debug.Log($"Assigned Item Room at {room.gridPos}");
+				break;  // Stop after assigning one item room
+			}
+		}
+
+		// Assign Shop Room
+		foreach (Room room in potentialItemAndShopRooms) {
+			if (!shopAssigned && room.type == 0 && NotNeighborOf(room, bossRoomPos) && NotNeighborOf(room, itemRoomPos) && NotNeighborOf(room, spawnRoomPos)) {
+				room.type = 3;  // Assign as Shop room
+				shopAssigned = true;
+				Debug.Log($"Assigned Shop Room at {room.gridPos}");
+				break;  // Stop after assigning one shop room
+			}
 		}
 	}
+
+	private bool NotNeighborOf(Room room, Vector2 neighborPos) {
+		Vector2[] directions = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
+		Vector2 checkPos;
+		foreach (Vector2 dir in directions) {
+			checkPos = room.gridPos + dir;
+			if (checkPos == neighborPos) {
+				// Debug.Log("r");
+				return false;  // Found a non-normal room neighbor
+			}
+		}
+		// Debug.Log("rr");
+		return true;  // No non-normal neighbors found
+	}
+
+	// Helper method to check if a room is isolated (i.e., surrounded only by normal rooms)
+	private bool IsIsolated(Room room, Room[,] rooms) {
+		Vector2[] directions = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
+		foreach (Vector2 dir in directions) {
+			Vector2 neighborPos = room.gridPos + dir;
+			if (RoomExists(neighborPos, rooms) && rooms[(int)neighborPos.x, (int)neighborPos.y].type != 0) {
+				//Debug.Log("r");
+				return false;  // Found a non-normal room neighbor
+			}
+		}
+		//Debug.Log("rr");
+		return true;  // No non-normal neighbors found
+	}
+
+	// Existing method from previous snippets
+	private bool RoomExists(Vector2 gridPos, Room[,] rooms) {
+		int x = Mathf.FloorToInt(gridPos.x);
+		int y = Mathf.FloorToInt(gridPos.y);
+		return x >= 0 && x < rooms.GetLength(0) && y >= 0 && y < rooms.GetLength(1) && rooms[x, y] != null;
+	} 
 
     private void AssignRoomTypeRandomly(int roomType) {
 		int index = Random.Range(0, potentialItemAndShopRooms.Count);
@@ -100,9 +197,9 @@ public class SheetAssigner : MonoBehaviour {
     }
 
     // Helper method to check if a room exists in the specified position
-    private bool RoomExists(Vector2 gridPos, Room[,] rooms) {
+    /* private bool RoomExists(Vector2 gridPos, Room[,] rooms) {
         int x = Mathf.FloorToInt(gridPos.x);
         int y = Mathf.FloorToInt(gridPos.y);
         return x >= 0 && x < rooms.GetLength(0) && y >= 0 && y < rooms.GetLength(1) && rooms[x, y] != null;
-    }
+    } */
 }

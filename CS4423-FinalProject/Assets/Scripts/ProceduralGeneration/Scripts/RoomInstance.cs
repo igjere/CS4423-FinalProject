@@ -18,11 +18,17 @@ public class RoomInstance : MonoBehaviour {
 	[SerializeField]
     GameObject[] enemyPrefabs;
 	[SerializeField]
+	GameObject bossPrefab;
+	[SerializeField]
 	GameObject coinPrefab;
 	[SerializeField]
 	GameObject spikePrefab;
 	[SerializeField]
+	GameObject heartPrefab;
+	[SerializeField]
 	GameObject trashcanPrefab;
+	[SerializeField]
+	GameObject shopcanPrefab;
 	[SerializeField]
 	GameObject[] itemPrefabs;
 
@@ -30,6 +36,11 @@ public class RoomInstance : MonoBehaviour {
 	List<Vector3> validEnemySpawnPoints = new List<Vector3>();
     List<Vector3> validCoinSpawnPoints = new List<Vector3>();
 	public List<GameObject> enemiesInRoom = new List<GameObject>();
+
+	//public List<RoomInstance> potentialItemAndShopRooms = new List<RoomInstance>();
+    //public List<RoomInstance> potentialBossRooms = new List<RoomInstance>();
+	//RoomInstance myRoom;
+	int numDoors;
 
 	public void Setup(Texture2D _tex, Vector2 _gridPos, int _type, bool _doorTop, bool _doorBot, bool _doorLeft, bool _doorRight){
 		tex = _tex;
@@ -40,27 +51,74 @@ public class RoomInstance : MonoBehaviour {
 		doorLeft = _doorLeft;
 		doorRight = _doorRight;
 		List<string> doors = new List<string>();
-		if (doorTop) doors.Add("top");
-		if (doorBot) doors.Add("bottom");
-		if (doorLeft) doors.Add("left");
-		if (doorRight) doors.Add("right");
+
+		numDoors = 0;
+		if (doorTop){
+			doors.Add("top");
+			numDoors++;
+		} 
+		if (doorBot) {
+			doors.Add("bottom");
+			numDoors++;
+		} 
+		if (doorLeft) {
+			doors.Add("left");
+			numDoors++;
+		} 
+		if (doorRight) {
+			doors.Add("right");
+			numDoors++;
+		} 
 
 		// Join the list into a single string
 		string doorDescriptions = string.Join(", ", doors);
 		if (doorDescriptions.Length > 0) {
 			doorDescriptions = " with a door on the " + doorDescriptions;
 		}
+		
+		// numDoors = doorDescriptions.Length;
 
-    // Log the grid position along with door information
-    //Debug.Log($"Setting up RoomInstance at grid position: {gridPos} with type: {type}{doorDescriptions}");
+		// Log the grid position along with door information
+		// Debug.Log($"Setting up RoomInstance at grid position: {gridPos} with type: {type}{doorDescriptions}");
+		// Debug.Log($"numDoors: {numDoors}");
+		/* if (type == 0) { // Ensure it's a normal room
+			if (numDoors == 1) {
+				// Potential boss room
+				potentialBossRooms.Add(this);
+				Debug.Log($"RoomInstance: {gridPos} added to potential boss rooms");
+			} else {
+				// Potential item or shop room
+				potentialItemAndShopRooms.Add(this);
+				Debug.Log($"RoomInstance: {gridPos} added to potential item and shop rooms");
+			}
+		} */
 		MakeDoors();
 		GenerateRoomTiles();
+
+		//AssignBossRoom();
+		//AssignSpecialRooms();
+
 		if (type == 1) {
 			SpawnBookshelf();
 			return; // Skip spawning enemies and coins for type 1 rooms
-    	}
+		}
+		if (type == 2){
+			SpawnBookshelf();
+			SpawnHearts();
+			return; // Skip spawning enemies and coins for type 1 rooms
+		}
+		if (type == 3){
+			SpawnShopShelf();
+			SpawnHearts();
+			return;
+		}
+		if (type == 5){
+			SpawnBoss();
+			SpawnSpikes();
+			return;
+		}
 		SpawnEnemies();
-		SpawnCoins();
+		SpawnCoins(); 
 		SpawnSpikes();
 	}
 	void MakeDoors(){
@@ -413,10 +471,16 @@ public class RoomInstance : MonoBehaviour {
         Color pixelColor = tex.GetPixel(x, y);
         if (pixelColor.a == 0) {
             Vector3 spawnPos = positionFromTileGrid(x, y);
+			// Exclude perimeter of the room
+			if (IsInPerimeter(spawnPos) || (spawnPos == transform.position + Vector3.up*(roomSizeInTiles.y/4 * tileSize) - Vector3.up*(tileSize/4)) || (spawnPos == transform.position + Vector3.down*(roomSizeInTiles.y/4 * tileSize) - Vector3.down*(tileSize/4)) || (spawnPos == transform.position + Vector3.right*(roomSizeInTiles.x * tileSize) - Vector3.right*(tileSize)) || (spawnPos == transform.position + Vector3.left*(roomSizeInTiles.x * tileSize) - Vector3.left*(tileSize))) {
+				return; // Skip adding this position if it's in the perimeter
+			}
+
             // Determine if within centered range for enemies
             if (spawnPos.x >= transform.position.x - 32 && spawnPos.x <= transform.position.x + 32 && spawnPos.y >= transform.position.y - 16 && spawnPos.y <= transform.position.y + 16) {
                 validEnemySpawnPoints.Add(spawnPos);
             } else {
+				// TODO: MAKE COINS AND SPIKES NOT SPAWN IN BORDER OF ROOM/ON DOOR TRIGGERS
                 // Otherwise, it's a valid coin spawn
                 validCoinSpawnPoints.Add(spawnPos);
             }
@@ -432,6 +496,21 @@ public class RoomInstance : MonoBehaviour {
 			}
 		}
 	}
+	bool IsInPerimeter(Vector3 position) {
+		// Exclude exact boundary positions
+		float minX = transform.position.x - roomSizeInTiles.x * tileSize / 2 + tileSize;
+		float maxX = transform.position.x + roomSizeInTiles.x * tileSize / 2 - tileSize;
+		float minY = transform.position.y - roomSizeInTiles.y * tileSize / 2 + tileSize;
+		float maxY = transform.position.y + roomSizeInTiles.y * tileSize / 2 - tileSize;
+
+		// Adjusted to exclude the edges where x or y equals the boundary values
+		if (position.x <= minX || position.x >= maxX || position.y <= minY || position.y >= maxY ||
+			Mathf.Abs(position.x) == 128 || Mathf.Abs(position.y) == 64) {
+			return true;
+		}
+		return false;
+	}
+
 	Vector3 positionFromTileGrid(int x, int y){
 		Vector3 ret;
 		//find difference between the corner of the texture and the center of this object
@@ -440,10 +519,68 @@ public class RoomInstance : MonoBehaviour {
 		ret = new Vector3(tileSize * (float) x, -tileSize * (float) y, 0) + offset + transform.position;
 		return ret;
 	}
+
+	/* void AssignBossRoom() {
+		if (potentialBossRooms.Count > 0) {
+			int index = Random.Range(0, potentialBossRooms.Count);
+			if (potentialBossRooms[index] == null) {
+				Debug.LogError($"potentialBossRooms at index {index} is null!");
+				return;
+			}
+			else{
+				potentialBossRooms[index].type = 5; // Assign as Boss room
+				Debug.Log($"Assigned Boss Room at {potentialBossRooms[index].gridPos}");
+			}
+		}
+	}
+
+	void AssignSpecialRooms() {
+
+		if (potentialItemAndShopRooms.Count > 0) {
+			AssignRoomTypeRandomly(2); // Item room
+			AssignRoomTypeRandomly(3); // Shop
+		}
+	} */
+
+	/* void AssignRoomTypeRandomly(int roomType) {
+		int index = Random.Range(0, potentialItemAndShopRooms.Count);
+		if (potentialItemAndShopRooms[index] == null) {
+			Debug.LogError($"potentialItemAdnShopRooms at index {index} is null!");
+			return;
+		}
+		else{
+			potentialItemAndShopRooms[index].type = roomType;
+			Debug.Log($"Assigned {roomType} at {potentialItemAndShopRooms[index].gridPos}");
+			potentialItemAndShopRooms.RemoveAt(index); // Remove the room from the list to avoid duplicate assignments
+		}
+	} */
+
 	void SpawnBookshelf() {
 		Vector3 centerPos = transform.position; // Assuming this is the center of the room
 		Instantiate(trashcanPrefab, centerPos, Quaternion.identity, transform);
 	}
+
+	void SpawnShopShelf() {
+		Vector3 centerPos = transform.position; // Assuming this is the center of the room
+    	Vector3 offset = new Vector3(tileSize, 0, 0); // Using tileSize as an arbitrary offset for separation
+
+    	// Instantiate the first shop shelf slightly to the left of the center
+    	Instantiate(shopcanPrefab, centerPos - offset, Quaternion.identity, transform);
+
+    	// Instantiate the second shop shelf slightly to the right of the center
+    	Instantiate(shopcanPrefab, centerPos + offset, Quaternion.identity, transform);
+	}
+
+	void SpawnBoss(){
+		Vector3 centerPos = transform.position;
+		GameObject enemyInstance = Instantiate(bossPrefab, centerPos, Quaternion.identity, transform);
+		Creature enemyCreature = enemyInstance.GetComponent<Creature>();
+		if (enemyCreature != null) {
+			enemyCreature.SetRoomInstance(this);
+		}
+		enemiesInRoom.Add(enemyInstance);
+	}
+
 	void SpawnEnemies() {
         if (type == 1) return;
         int enemiesToSpawn = Random.Range(3, 6); // Spawns 3 to 6 enemies
@@ -463,6 +600,20 @@ public class RoomInstance : MonoBehaviour {
         }
 		// Debug.Log($"Room at grid position ({gridPos.x}, {gridPos.y}) has {enemiesInRoom.Count} enemies.");
     }
+	void SpawnHearts() {
+        if (type == 1) return;
+        int coinsToSpawn = Random.Range(1, 2);
+        for (int i = 0; i < coinsToSpawn; i++) {
+            if (validCoinSpawnPoints.Count > 0) {
+                int spawnIndex = Random.Range(0, validCoinSpawnPoints.Count);
+                Vector3 spawnPos = validCoinSpawnPoints[spawnIndex];
+				if (!IsInPerimeter(spawnPos)) {
+                	Instantiate(heartPrefab, spawnPos, Quaternion.identity, transform);
+                	validCoinSpawnPoints.RemoveAt(spawnIndex);
+				}
+            }
+        }
+    }
 	void SpawnCoins() {
         if (type == 1) return;
         int coinsToSpawn = Random.Range(1, 3);
@@ -470,8 +621,10 @@ public class RoomInstance : MonoBehaviour {
             if (validCoinSpawnPoints.Count > 0) {
                 int spawnIndex = Random.Range(0, validCoinSpawnPoints.Count);
                 Vector3 spawnPos = validCoinSpawnPoints[spawnIndex];
-                Instantiate(coinPrefab, spawnPos, Quaternion.identity, transform);
-                validCoinSpawnPoints.RemoveAt(spawnIndex);
+				if (!IsInPerimeter(spawnPos)) {
+                	Instantiate(coinPrefab, spawnPos, Quaternion.identity, transform);
+                	validCoinSpawnPoints.RemoveAt(spawnIndex);
+				}
             }
         }
     }
@@ -482,8 +635,10 @@ public class RoomInstance : MonoBehaviour {
             if (validCoinSpawnPoints.Count > 0) {
                 int spawnIndex = Random.Range(0, validCoinSpawnPoints.Count);
                 Vector3 spawnPos = validCoinSpawnPoints[spawnIndex];
-                Instantiate(spikePrefab, spawnPos, Quaternion.identity, transform);
-                validCoinSpawnPoints.RemoveAt(spawnIndex);
+				if (!IsInPerimeter(spawnPos)) {
+                	Instantiate(spikePrefab, spawnPos, Quaternion.identity, transform);
+                	validCoinSpawnPoints.RemoveAt(spawnIndex);
+				}
             }
         }
     }

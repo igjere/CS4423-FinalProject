@@ -5,7 +5,13 @@ using Aoiti.Pathfinding; //import the pathfinding library
 
 public class CreatureAI : MonoBehaviour
 {
+    public enum CreatureType
+    {
+        Enemy,
+        Boss
+    }
 
+    public CreatureType type;
     //blackboard=======================================================
     public Creature myCreature; //the creature we are piloting
     public Creature targetCreature;
@@ -25,6 +31,7 @@ public class CreatureAI : MonoBehaviour
     public CreatureAIHugState hugState{get; private set;}
     public CreatureAIPatrolState patrolState{get; private set;}
     public CreatureAIInvestigateState investigateState{get; private set;}
+    public CreatureAICooldownState cooldownState { get; private set; }
 
 
     public void ChangeState(CreatureAIState newState){
@@ -48,6 +55,7 @@ public class CreatureAI : MonoBehaviour
         hugState = new CreatureAIHugState(this);
         patrolState = new CreatureAIPatrolState(this);
         investigateState = new CreatureAIInvestigateState(this);
+        cooldownState = new CreatureAICooldownState(this);
         currentState = idleState;
 
         pathfinder = new Pathfinder<Vector2>(GetDistance,GetNeighbourNodes,1000);
@@ -136,6 +144,9 @@ public class CreatureAI : MonoBehaviour
         // Use a small range for checking proximity instead of an exact value.
         float distanceToTarget = Vector3.Distance(myCreature.transform.position, targetCreature.transform.position);
         float attackRange = 15f; // The range within which you consider "hitting" the target
+        if (type == CreatureType.Boss) {
+            attackRange = 20f; // Double the range for the boss
+        }
         float allowedVariance = 2f; // How much variance you allow from the exact range
 
         // Check if within a "close enough" range instead of an exact match
@@ -147,7 +158,11 @@ public class CreatureAI : MonoBehaviour
             {
                 // Debug.Log("Got here");
                 // Call TakeDamage on targetCreature with the damage amount, e.g., 1
-                targetCreature.TakeDamage(0.5f);
+                if (type == CreatureType.Boss) {
+                    targetCreature.TakeDamage(1f); // Double the range for the boss
+                } else{
+                    targetCreature.TakeDamage(0.5f);
+                }
             }
         }
     }

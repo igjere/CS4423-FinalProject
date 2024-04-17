@@ -72,6 +72,10 @@ public class ItemGrabber : MonoBehaviour
 
             Destroy(other.gameObject); // Assuming you want to remove the bookshelf/item after pickup
         }
+        else if (other.GetComponent<ShopShelf>() != null){
+            ShopShelf shopShelf = other.GetComponent<ShopShelf>();
+            shopShelf.Interact(this.player);
+        }
     }
 
     /* void DisplayItemInfo(string name, string description) {

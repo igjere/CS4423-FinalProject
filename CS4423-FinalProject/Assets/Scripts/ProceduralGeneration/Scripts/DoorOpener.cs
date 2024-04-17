@@ -35,7 +35,7 @@ public class DoorOpener : MonoBehaviour
 
         isDoorInteractionAvailable = true;
         // After cooldown, recheck the enemy status in the room instead of just setting to green
-        Debug.Log("r");
+        // Debug.Log("r");
         /* RoomInstance currentRoom = GetComponentInParent<RoomInstance>();
         if (currentRoom != null && currentRoom.enemiesInRoom.Count == 0)
         {

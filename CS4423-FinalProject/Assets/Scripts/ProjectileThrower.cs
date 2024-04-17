@@ -52,6 +52,7 @@ public class ProjectileThrower : MonoBehaviour
     public bool spectral = false;
     public bool homing = false;
     public float projectileSize = 1;
+    public float launchOffset = 10f; // Offset to start the projectile in front of the thrower
 
     private float timeSinceLastShot = 0f;
 
@@ -90,7 +91,8 @@ public class ProjectileThrower : MonoBehaviour
 
     private void Launch(Vector3 direction)
     {
-        GameObject newProjectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        Vector3 startPosition = transform.position + direction * launchOffset;
+        GameObject newProjectile = Instantiate(projectilePrefab, startPosition, Quaternion.identity);
         Projectile projectileScript = newProjectile.GetComponent<Projectile>();
         if (projectileScript != null)
         {

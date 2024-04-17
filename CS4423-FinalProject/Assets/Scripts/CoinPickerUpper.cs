@@ -13,13 +13,13 @@ public class CoinPickerUpper : MonoBehaviour
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Creature>();
         }
-        onCoinPickup.AddListener(PrintPickup);
+        // onCoinPickup.AddListener(PrintPickup);
 
     }
 
-    void PrintPickup(){
+    /* void PrintPickup(){
         Debug.Log("Picked up coin!");
-    }
+    } */
 
     void OnTriggerEnter2D(Collider2D other){
         if(other.GetComponent<Coin>() != null){
@@ -28,6 +28,15 @@ public class CoinPickerUpper : MonoBehaviour
             //myPickupEvent.Invoke(42); //this is how we can pass along data to functions, select the dynamic option if doing so through inspector
             GetComponent<AudioSource>().Play();
             Destroy(other.gameObject);
+        }
+        else if(other.GetComponent<Heart>() != null){
+            if(player.GetCurrentHealth() < player.GetMaxHealth()){
+                player.Heal(1f);
+                onCoinPickup.Invoke();
+                //myPickupEvent.Invoke(42); //this is how we can pass along data to functions, select the dynamic option if doing so through inspector
+                //GetComponent<AudioSource>().Play();
+                Destroy(other.gameObject);
+            }
         }
     }
 }

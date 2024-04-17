@@ -64,6 +64,9 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
         // No need to destroy the projectile if it's spectral and hits a wall, obstacle, or door
+        else if(isSpectral && (other.gameObject.tag == "Wall" || other.gameObject.tag == "Door") ){
+            Destroy(gameObject);
+        }
     }
     
     void Update()

@@ -9,7 +9,7 @@ public class UtilityBehaviors : MonoBehaviour {
 			ItemDatabase.Instance.ResetAvailableItems();
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
-		 if (Input.GetKeyDown(KeyCode.Escape)){//reload scene, for testing purposes
+		 if (Input.GetKeyDown(KeyCode.Escape)){
 		 	ItemDatabase.Instance.ResetAvailableItems();
 			SceneManager.LoadScene("MainMenu");
 		}

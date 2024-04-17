@@ -120,9 +120,12 @@ MonoBehaviour:
     prefab: {fileID: 3635670740183281467, guid: e8ed6668922f19a48a1b9fcbafab85b8, type: 3}
   enemyPrefabs:
   - {fileID: 869019109932833487, guid: 97235918bacc0b645ab044c54b3da818, type: 3}
+  bossPrefab: {fileID: 869019109932833487, guid: 700df0c4be2e33540991b86b98815425, type: 3}
   coinPrefab: {fileID: 4422517454840172205, guid: 199895ec72793a14c96d364a881ee9a9, type: 3}
   spikePrefab: {fileID: 4422517454840172205, guid: 05cca2ee030a40e42ba5af6fbf2167e5, type: 3}
+  heartPrefab: {fileID: 4422517454840172205, guid: 19125dcbb40c8ef4c8bdfeef3b9b25c2, type: 3}
   trashcanPrefab: {fileID: 3635670740183281467, guid: e8ed6668922f19a48a1b9fcbafab85b8, type: 3}
+  shopcanPrefab: {fileID: 3635670740183281467, guid: c9a068566b2bb5248b7e18f2549e7507, type: 3}
   itemPrefabs: []
   enemiesInRoom: []
 --- !u!1 &4388046606310678118

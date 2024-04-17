@@ -99,7 +99,7 @@ public class MapSpriteSelector : MonoBehaviour {
 			rend.sortingOrder = 1;
 		}
 
-		/* else if (type == 3){
+		else if (type == 3){
 			mainColor = itemRoomColor;
 			rend.color = mainColor;
 		}
@@ -110,7 +110,7 @@ public class MapSpriteSelector : MonoBehaviour {
 		else if (type == 6){
 			mainColor = bossRoomColor;
 			rend.color = mainColor;
-		} */
+		}
 		
 	}
 	public void UpdateColor() {
