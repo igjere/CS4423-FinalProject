@@ -64,13 +64,18 @@ public class ShopShelf : MonoBehaviour
         return currentItem;
     }
 
-    public void Interact(Creature player) {
+    public bool Interact(Creature player) {
         if (player.GetCoins() >= itemPrice) {
             currentItem.ApplyEffect(player);
             player.AddCoins(-itemPrice); // Subtract coins
+            if (priceTagInstance) {
+                Destroy(priceTagInstance);
+            }
             Destroy(gameObject); // Optionally destroy the shelf after purchase
+            return true; // Item was successfully bought
         } else {
             Debug.Log("Not enough coins!");
+            return false; // Purchase failed
         }
     }
 

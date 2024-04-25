@@ -118,7 +118,7 @@ MonoBehaviour:
   right: 0
   type: 0
   normalColor: {r: 1, g: 1, b: 1, a: 1}
-  enterColor: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
+  enterColor: {r: 0, g: 0.020439148, b: 1, a: 1}
   currentRoomPlayerColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
   bossRoomColor: {r: 1, g: 0, b: 0, a: 1}
   itemRoomColor: {r: 1, g: 0.86571324, b: 0, a: 1}

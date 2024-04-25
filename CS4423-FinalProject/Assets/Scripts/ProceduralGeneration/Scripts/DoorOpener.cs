@@ -125,6 +125,9 @@ public class DoorOpener : MonoBehaviour
             }
             else
             {
+                if (room.type == 5){
+                    Debug.Log("Victory!");
+                }
                 door.ResetColor();
             }
         }

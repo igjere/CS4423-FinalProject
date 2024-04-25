@@ -30,13 +30,16 @@ public class Projectile : MonoBehaviour
 {
     public float damage = 1f; // Default damage
     public bool isSpectral = false;
+    // public bool spectralBefore = false;
     public bool isHoming = false;
+
+    private float bossDamage;
 
     // Call this method to set the projectile's attributes when instantiated
     public void SetAttributes(float newDamage, bool spectral, bool homing, float sizeMultiplier)
     {
         damage = newDamage;
-        isSpectral = spectral;
+        if (spectral) isSpectral = true;
         isHoming = homing;
 
         // Adjusting the scale based on the original size (17x17x17) and the sizeMultiplier
@@ -61,8 +64,9 @@ public class Projectile : MonoBehaviour
             Creature enemy = other.GetComponent<Creature>();
             if (enemy != null)
             {
+                bossDamage = damage / 2f;
                 GetComponent<AudioSource>().Play();
-                enemy.GiveDamage(1f); // Apply damage
+                enemy.GiveDamage(bossDamage); // Apply damage
                 Destroy(gameObject); // Destroy the projectile after hitting an enemy
             }
         }

@@ -61,20 +61,36 @@ public class ItemGrabber : MonoBehaviour
             ShowItemNameAndDescription(item.itemName, item.description);
             // item.SetInventoryDisplay(inventoryDisplay);
             // ItemPickupManager pickupManager = FindObjectOfType<ItemPickupManager>(); // Find the item pickup manager in the scene
-            if(firstItem)
+            
+            /* if(firstItem)
             {
                 inventoryDisplay.OnItemPickedUp(item.itemSprite); // yourItemSprite is the sprite of the item that was picked up
                 firstItem = false;
             }
             else{ 
                 inventoryDisplay.AddItem(item.itemSprite);
-            }  
+            }   */
+            UpdateInventoryDisplay(item);
 
             Destroy(other.gameObject); // Assuming you want to remove the bookshelf/item after pickup
         }
         else if (other.GetComponent<ShopShelf>() != null){
             ShopShelf shopShelf = other.GetComponent<ShopShelf>();
-            shopShelf.Interact(this.player);
+            bool isPurchased = shopShelf.Interact(player);
+            if (isPurchased) {
+                Item item = shopShelf.GetItem();
+                ShowItemNameAndDescription(item.itemName, item.description);
+                UpdateInventoryDisplay(item);
+            }
+        }
+    }
+
+    void UpdateInventoryDisplay(Item item) {
+        if (firstItem) {
+            inventoryDisplay.OnItemPickedUp(item.itemSprite);
+            firstItem = false;
+        } else {
+            inventoryDisplay.AddItem(item.itemSprite);
         }
     }
 

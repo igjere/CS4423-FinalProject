@@ -5,7 +5,7 @@ using UnityEngine;
 public class CreatureAIHugState : CreatureAIState
 {
     private float initialSpeed;
-    private float maxSpeedIncrease = 2.5f;  // Max speed factor
+    private float maxSpeedIncrease = 2f;  // Max speed factor
     private float speedIncreaseDuration = 5.0f;  // Duration of the speed increase phase
 
     public CreatureAIHugState(CreatureAI creatureAI) : base(creatureAI){}

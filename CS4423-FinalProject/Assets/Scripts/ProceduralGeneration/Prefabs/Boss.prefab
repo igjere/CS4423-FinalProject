@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -61.05, y: 0, z: 0}
-  m_LocalScale: {x: 30, y: 30, z: 30}
+  m_LocalScale: {x: 24, y: 24, z: 24}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3786537761803589750}
@@ -50,10 +50,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAlive: 1
-  speed: 20
+  speed: 21
   jumpForce: 15
-  currentHealth: 75
-  maxHealth: 75
+  currentHealth: 65
+  maxHealth: 65
   stamina: 3
   isInvincible: 0
   invincibilityDurationSeconds: 5
@@ -136,9 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 6059629928162747791, guid: 87bbe1f8e5389144aad47677098ce092, type: 3}
-  speed: 55
-  fireRate: 2.5
-  paperRange: 100
+  speed: 75
+  fireRate: 10
+  paperRange: 200
   damage: 1
   spectral: 0
   homing: 0

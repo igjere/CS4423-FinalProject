@@ -71,7 +71,7 @@ public class ProjectileThrower : MonoBehaviour
     {
         damage = newDamage;
         fireRate = newFireRate;
-        spectral = newSpectral;
+        if (newSpectral) spectral = true;
         homing = newHoming;
         projectileSize = newSize;
         paperRange = newRange;

@@ -57,11 +57,20 @@ public class SheetAssigner : MonoBehaviour {
 					potentialItemAndShopRooms.Add(myRoom); // All other normal rooms are potential item or shop rooms
 				}
 			} */
-			if (room.type != 0){
+			if (room.type == 5){
+				myRoom.Setup(sheetsNormal[6], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
+			}
+			else if (room.type == 1){
+				myRoom.Setup(sheetsNormal[5], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
+			}
+			else if (room.type == 2){
+				myRoom.Setup(sheetsNormal[5], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
+			}
+			else if (room.type == 3){
 				myRoom.Setup(sheetsNormal[5], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
 			}
 			else{
-				myRoom.Setup(sheetsNormal[Random.Range(0, sheetsNormal.Length)], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
+				myRoom.Setup(sheetsNormal[Random.Range(0, 4)], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
 			}
 			roomInstances.Add(myRoom);
 

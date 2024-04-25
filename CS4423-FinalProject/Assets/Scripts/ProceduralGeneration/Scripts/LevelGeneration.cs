@@ -252,12 +252,33 @@ public class LevelGeneration : MonoBehaviour {
 	} */
 	public void SetCurrentRoom(Vector2 oldRoom, Vector2 newRoom) {
 		Debug.Log($"Setting current room from {oldRoom} to {newRoom}");
-
+		
+		Room leaveRoom = null;
+		foreach (Room room in rooms) {
+			if (room != null && room.gridPos == oldRoom) {
+				leaveRoom = room;
+				break; // Room found
+			}
+		}
 		// First, handle the old room sprite if it exists
 		if (roomGameObjects.TryGetValue(oldRoom, out GameObject oldRoomObj)) {
 			MapSpriteSelector oldRoomMapper = oldRoomObj.GetComponent<MapSpriteSelector>();
 			if (oldRoomMapper != null) {
-				oldRoomMapper.type = 0; // Change the sprite type of the old room back to 0
+				if (leaveRoom != null && leaveRoom.type == 5){
+					oldRoomMapper.type = 6; 	
+				}
+				else if (leaveRoom != null && leaveRoom.type == 2){
+					oldRoomMapper.type = 3; 	
+				}
+				else if (leaveRoom != null && leaveRoom.type == 3){
+					oldRoomMapper.type = 4; 	
+				}
+				else if (leaveRoom != null && leaveRoom.type == 1){
+					oldRoomMapper.type = 1; 
+				}
+				else{
+					oldRoomMapper.type = 0; // Change the sprite type of the old room back to 0
+				}
 				oldRoomMapper.UpdateColor(); // Make sure to update the color or sprite as needed
 				// Optionally adjust sortingOrder or other properties if necessary
 				// oldRoomMapper.rend.sortingOrder = 0; // This ensures it's not rendered above other objects unexpectedly

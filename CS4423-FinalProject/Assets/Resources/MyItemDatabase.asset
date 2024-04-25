@@ -28,7 +28,7 @@ MonoBehaviour:
     paperRateEffect: 0
     rangeEffect: 0
     paperSpeedEffect: 0
-    projectileSize: 3
+    projectileSize: 1.4
     spectral: 1
     honing: 0
     projectileSprite: {fileID: 0}
@@ -148,7 +148,7 @@ MonoBehaviour:
     paperRateEffect: 8
     rangeEffect: -3
     paperSpeedEffect: 10
-    projectileSize: 1
+    projectileSize: 0.6
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
@@ -208,7 +208,7 @@ MonoBehaviour:
     paperRateEffect: 0
     rangeEffect: 1
     paperSpeedEffect: 3
-    projectileSize: 2
+    projectileSize: 1.4
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
@@ -248,7 +248,7 @@ MonoBehaviour:
     paperRateEffect: -0.5
     rangeEffect: 0
     paperSpeedEffect: -1
-    projectileSize: 2
+    projectileSize: 1.5
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
@@ -268,7 +268,7 @@ MonoBehaviour:
     paperRateEffect: 3
     rangeEffect: 0
     paperSpeedEffect: 5
-    projectileSize: 1
+    projectileSize: 0.75
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
@@ -288,7 +288,7 @@ MonoBehaviour:
     paperRateEffect: 1
     rangeEffect: 3
     paperSpeedEffect: 4
-    projectileSize: 2
+    projectileSize: 1.25
     spectral: 0
     honing: 0
     projectileSprite: {fileID: 0}
@@ -378,7 +378,7 @@ MonoBehaviour:
     description: Just On Time...
     itemSprite: {fileID: 21300000, guid: a1a067ee123b3164291760b125ce13de, type: 3}
     quality: 4
-    weight: 0.3
+    weight: 0.2
     healthEffect: 8
     speedEffect: 10
     flight: 1
@@ -393,4 +393,4 @@ MonoBehaviour:
     honing: 1
     projectileSprite: {fileID: 0}
     inventoryDisplay: {fileID: 0}
-  availableItemIDs: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000e0000000f00000010000000110000001200000013000000
+  availableItemIDs: 0200000003000000040000000500000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001200000013000000
