@@ -11,7 +11,9 @@ public class CreatureAICooldownState : CreatureAIState
 
     public override void BeginState()
     {
-        creatureAI.SetColor(Color.blue);
+        if (creatureAI.type == CreatureAI.CreatureType.Boss){
+            creatureAI.SetColor(Color.yellow);
+        }
         projectileThrower = creatureAI.myCreature.GetComponent<ProjectileThrower>();
         if (projectileThrower == null)
         {
@@ -21,7 +23,7 @@ public class CreatureAICooldownState : CreatureAIState
 
     public override void UpdateState()
     {
-        if (timer > cooldownDuration)
+        if (timer > cooldownDuration && creatureAI.type == CreatureAI.CreatureType.Boss)
         {
             creatureAI.ChangeState(creatureAI.hugState);  // Go back to hug state
         }

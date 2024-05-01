@@ -25,7 +25,7 @@ public class ItemDatabase : ScriptableObject {
 
     void OnEnable() {
         // Initialize the list with all item IDs when the game starts
-        ResetAvailableItems(); // Optionally, you can call ResetAvailableItems here to initialize
+        ResetAvailableItems(); 
     }
 
     public void RemoveItemByID(int itemID) {

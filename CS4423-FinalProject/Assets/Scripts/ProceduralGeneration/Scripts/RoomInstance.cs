@@ -76,22 +76,7 @@ public class RoomInstance : MonoBehaviour {
 			doorDescriptions = " with a door on the " + doorDescriptions;
 		}
 		
-		// numDoors = doorDescriptions.Length;
-
-		// Log the grid position along with door information
-		// Debug.Log($"Setting up RoomInstance at grid position: {gridPos} with type: {type}{doorDescriptions}");
-		// Debug.Log($"numDoors: {numDoors}");
-		/* if (type == 0) { // Ensure it's a normal room
-			if (numDoors == 1) {
-				// Potential boss room
-				potentialBossRooms.Add(this);
-				Debug.Log($"RoomInstance: {gridPos} added to potential boss rooms");
-			} else {
-				// Potential item or shop room
-				potentialItemAndShopRooms.Add(this);
-				Debug.Log($"RoomInstance: {gridPos} added to potential item and shop rooms");
-			}
-		} */
+		
 		MakeDoors();
 		GenerateRoomTiles();
 
@@ -313,152 +298,6 @@ public class RoomInstance : MonoBehaviour {
 		}
 		return true; // No objects found; position is empty
 	}
-	/* void PlaceWallTilesAroundDoor(Vector3 doorPosition, string doorOrientation){
-		Vector3 wallTilePosition;
-		GameObject wall;
-		SpriteRenderer renderer;
-
-		if (doorOrientation == "Top") {
-			// Place wall tiles to the left and right of the top door
-			wallTilePosition = doorPosition + Vector3.left * tileSize;
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-			wallTilePosition = doorPosition + Vector3.right * tileSize;
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-
-			// Optional: Place an additional wall tile above the door for aesthetic completeness
-			wallTilePosition = doorPosition + Vector3.up * tileSize; // Adjust as necessary
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-		}
-
-		// Handle left door wall tiles placement
-		if (doorOrientation == "Left") {
-			// Place wall tiles above and below the left door
-			wallTilePosition = doorPosition + Vector3.up * tileSize;
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-			wallTilePosition = doorPosition + Vector3.down * tileSize;
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-
-			// Optional: Place an additional wall tile to the left of the door for aesthetic completeness
-			wallTilePosition = doorPosition + Vector3.left * tileSize; // Adjust as necessary
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-		}
-		
-		if (doorOrientation == "Bottom") {
-			// Place wall tiles to the left and right of the top door
-			wallTilePosition = doorPosition + Vector3.left * tileSize;
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-			wallTilePosition = doorPosition + Vector3.right * tileSize;
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-
-			// Optional: Place an additional wall tile above the door for aesthetic completeness
-			wallTilePosition = doorPosition + Vector3.down * tileSize; // Adjust as necessary
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-		}
-
-		// Handle left door wall tiles placement
-		if (doorOrientation == "Right") {
-			// Place wall tiles above and below the left door
-			wallTilePosition = doorPosition + Vector3.up * tileSize;
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-			wallTilePosition = doorPosition + Vector3.down * tileSize;
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-
-			// Optional: Place an additional wall tile to the left of the door for aesthetic completeness
-			wallTilePosition = doorPosition + Vector3.right * tileSize; // Adjust as necessary
-			if (IsTilePositionEmpty(wallTilePosition)) {
-				wall = Instantiate(doorWall, wallTilePosition, Quaternion.identity, transform);
-				renderer = wall.GetComponent<SpriteRenderer>();
-				if (renderer != null) {
-					renderer.enabled = false; // This disables the rendering, making it invisible
-				}
-			}
-		}
-
-		// Optionally, place additional wall tiles if needed to make the doorway look more complete
-		// For example, for a door on the left or right, you might want to place wall tiles above and below the already placed ones
-	}
-	bool IsTilePositionEmpty(Vector3 position) {
-		// Define the size of the box based on your WallTile size
-		Vector2 checkSize = new Vector2(16f, 16f); // Adjust this value if your WallTile size changes
-
-		// You may need to adjust the layerMask if you are using specific layers for your wall tiles
-		// For simplicity, I'm not using a layer mask here, but you can add it as a parameter if needed
-		int layerMask = ~0; // This means it will check all layers
-
-		Collider2D[] colliders = Physics2D.OverlapBoxAll(position, checkSize, 0, layerMask);
-		foreach (var collider in colliders) {
-			if (collider.CompareTag("Wall")) { // Assuming WallTiles are tagged as "WallTile"
-				return false; // Found a WallTile at this position
-			}
-		}
-		return true; // No WallTile found at this position
-	} */
 	void GenerateRoomTiles(){
 		//loop through every pixel of the texture
 		for(int x = 0; x < tex.width; x++){
@@ -519,41 +358,6 @@ public class RoomInstance : MonoBehaviour {
 		ret = new Vector3(tileSize * (float) x, -tileSize * (float) y, 0) + offset + transform.position;
 		return ret;
 	}
-
-	/* void AssignBossRoom() {
-		if (potentialBossRooms.Count > 0) {
-			int index = Random.Range(0, potentialBossRooms.Count);
-			if (potentialBossRooms[index] == null) {
-				Debug.LogError($"potentialBossRooms at index {index} is null!");
-				return;
-			}
-			else{
-				potentialBossRooms[index].type = 5; // Assign as Boss room
-				Debug.Log($"Assigned Boss Room at {potentialBossRooms[index].gridPos}");
-			}
-		}
-	}
-
-	void AssignSpecialRooms() {
-
-		if (potentialItemAndShopRooms.Count > 0) {
-			AssignRoomTypeRandomly(2); // Item room
-			AssignRoomTypeRandomly(3); // Shop
-		}
-	} */
-
-	/* void AssignRoomTypeRandomly(int roomType) {
-		int index = Random.Range(0, potentialItemAndShopRooms.Count);
-		if (potentialItemAndShopRooms[index] == null) {
-			Debug.LogError($"potentialItemAdnShopRooms at index {index} is null!");
-			return;
-		}
-		else{
-			potentialItemAndShopRooms[index].type = roomType;
-			Debug.Log($"Assigned {roomType} at {potentialItemAndShopRooms[index].gridPos}");
-			potentialItemAndShopRooms.RemoveAt(index); // Remove the room from the list to avoid duplicate assignments
-		}
-	} */
 
 	void SpawnBookshelf() {
 		Vector3 centerPos = transform.position; // Assuming this is the center of the room
@@ -642,14 +446,7 @@ public class RoomInstance : MonoBehaviour {
             }
         }
     }
-	/* public void UpdateDoorColors()
-	{
-		DoorOpener[] doorOpeners = GetComponentsInChildren<DoorOpener>();
-		foreach (var doorOpener in doorOpeners)
-		{
-			doorOpener.SetDoorColorBasedOnEnemies(this);
-		}
-	} */
+	
 	public void CheckAndUpdateDoors()
 	{
 		// This method would loop through each door in the room and update its color based on enemy count

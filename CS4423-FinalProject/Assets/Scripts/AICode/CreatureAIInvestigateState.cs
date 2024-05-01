@@ -7,7 +7,7 @@ public class CreatureAIInvestigateState : CreatureAIState
     List<Vector2> path;
     public CreatureAIInvestigateState(CreatureAI creatureAI) : base(creatureAI){}
 
-    float pauseTime = 1f;
+    float pauseTime = 0.1f;
     public override void BeginState()
     {
         if(path == null){
@@ -15,7 +15,7 @@ public class CreatureAIInvestigateState : CreatureAIState
         }
         creatureAI.GetTargetMoveCommand(ref path);
         // Debug.Log(path.Count);
-        creatureAI.SetColor(Color.yellow);
+        creatureAI.SetColor(Color.red);
     }
     public override void UpdateState()
     {

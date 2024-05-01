@@ -29,6 +29,13 @@ public class ItemDisplay : MonoBehaviour
         StartCoroutine(FadeTextInAndOut());
     }
 
+    public void ShowVictoryMessage(string message)
+    {
+        itemNameText.text = message;
+        itemDescriptionText.text = "Press R to try again or ESC to go back to the main menu!";
+        StartCoroutine(FadeTextInAndOut());
+    }
+
     IEnumerator FadeTextInAndOut()
     {
         // Make text visible

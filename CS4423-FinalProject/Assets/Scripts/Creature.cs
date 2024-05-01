@@ -13,6 +13,8 @@ public class Creature : MonoBehaviour
     // [SerializeField] public float health = 3;
     [SerializeField] private float currentHealth = 3; // Current filled health.
     [SerializeField] private float maxHealth = 3; //
+
+    [SerializeField] private HealthDisplay healthDisplay;
     [SerializeField] int stamina = 3;
     [SerializeField] bool isInvincible = false;
     [SerializeField] float invincibilityDurationSeconds = 5f; // Duration of i-frames in seconds
@@ -60,10 +62,10 @@ public class Creature : MonoBehaviour
     void Start()
     {
         // Debug.Log(health);
-
+        if (gameObject.CompareTag("Player")) {
+            InitializeHealth();
+        }
     }
-
-
 
     // Update is called once per frame
     void Update()
@@ -83,6 +85,12 @@ public class Creature : MonoBehaviour
 
     public void SetRoomInstance(RoomInstance room) {
         roomInstance = room;
+    }
+
+    void InitializeHealth()
+    {
+        currentHealth = maxHealth = 3; // Start with 3 full hearts for the player
+        UpdateHealthUI();
     }
 
     public void MoveCreature(Vector3 direction)
@@ -183,7 +191,7 @@ public class Creature : MonoBehaviour
 
         currentHealth -= damageAmount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health doesn't fall below 0 or above maxHealth
-
+        UpdateHealthUI();
         CheckDeath();
         /* if (health <= 0)
         {
@@ -204,6 +212,7 @@ public class Creature : MonoBehaviour
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health doesn't exceed maxHealth
+        UpdateHealthUI();
     }
 
     // Call this method to increase max health (heart containers) and fully heal
@@ -211,6 +220,7 @@ public class Creature : MonoBehaviour
     {
         maxHealth += increaseAmount;
         currentHealth = maxHealth; // Fully heal the player
+        UpdateHealthUI();
     }
 
     public void DecreaseMaxHealth(float decreaseAmount)
@@ -218,8 +228,15 @@ public class Creature : MonoBehaviour
         maxHealth -= decreaseAmount;
         currentHealth = maxHealth; // Fully heal the player
         StartCoroutine(BecomeTemporarilyInvincible()); // Start invincibility frames
+        UpdateHealthUI();
     }
-
+    private void UpdateHealthUI()
+    {
+        if (healthDisplay != null)
+        {
+            healthDisplay.UpdateHealthDisplay(currentHealth, maxHealth);
+        }
+    }
     private void CheckDeath()
     {
         if (currentHealth <= 0)

@@ -21,6 +21,6 @@ public class CreatureAIIdleState : CreatureAIState
 
     public override void BeginState()
     {
-        creatureAI.SetColor(Color.white);
+        creatureAI.SetColor(Color.green);
     }
 }

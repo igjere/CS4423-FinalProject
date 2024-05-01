@@ -8,6 +8,7 @@ public class CreatureAI : MonoBehaviour
     public enum CreatureType
     {
         Enemy,
+        Ranged,
         Boss
     }
 
@@ -57,6 +58,9 @@ public class CreatureAI : MonoBehaviour
         investigateState = new CreatureAIInvestigateState(this);
         cooldownState = new CreatureAICooldownState(this);
         currentState = idleState;
+        if (type == CreatureType.Enemy){
+            myCreature.body.GetComponent<SpriteRenderer>().color = Color.green;
+        }
 
         pathfinder = new Pathfinder<Vector2>(GetDistance,GetNeighbourNodes,1000);
     }

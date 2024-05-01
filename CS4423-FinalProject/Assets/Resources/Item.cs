@@ -35,20 +35,15 @@ public class Item {
         Debug.Log($"Applying effect of {itemName} to the player.");
 
         // Modify player attributes based on the item's effects
-        // player.health += this.healthEffect;
         if (healthEffect > 0) {
             player.IncreaseMaxHealth(healthEffect); // Cast to int if necessary, or change healthEffect to int
         } else if (healthEffect < 0) {
-            player.DecreaseMaxHealth(-healthEffect); // If you want items that can damage the player
+            player.DecreaseMaxHealth(-healthEffect); 
         }
         player.speed += this.speedEffect; // Ensure Creature has a public property or method to modify speed
         if (this.flight) {
             // Implement flight logic, possibly toggling a 'canFly' boolean in Creature
         }
-
-        // Assuming you have methods or properties for these in Creature
-        // player.paperRate -= this.paperRateEffect; // Assuming lower rate means faster shooting
-        // player.paperDamage += this.damageEffect;
 
         ProjectileThrower thrower = player.GetComponent<ProjectileThrower>();
         if (thrower != null)
@@ -63,16 +58,5 @@ public class Item {
                 this.projectileSize
             );
         }
-
-        // Apply any other effects your items might have
-        //inventoryDisplay.AddItem(itemSprite);
-        /* if(inventoryDisplay != null) {
-            inventoryDisplay.AddItem(itemSprite);
-        } else {
-            Debug.LogError("InventoryDisplay not set for the item.");
-        } */
     }
-    /* public void SetInventoryDisplay(InventoryDisplay inventoryDisplay) {
-        this.inventoryDisplay = inventoryDisplay;
-    } */
 }

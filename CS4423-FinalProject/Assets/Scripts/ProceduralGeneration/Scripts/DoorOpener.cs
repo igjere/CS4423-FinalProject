@@ -9,12 +9,9 @@ public class DoorOpener : MonoBehaviour
     private bool isDoorInteractionAvailable = true;
     private float doorInteractionCooldown = 2f;
 
-    //this is how we can pass along data to functions through our events
-    // [System.Serializable]
-    // public class MyEvent : UnityEvent<int> {}
-    // public MyEvent myPickupEvent;
-
     Vector2 roomSizeInTiles = new Vector2(9,17);
+
+    public ItemDisplay itemDisplay; 
 
     void Start(){
         onDoorOpen.AddListener(PrintDoor);
@@ -22,7 +19,7 @@ public class DoorOpener : MonoBehaviour
     }
 
     void PrintDoor(){
-        Debug.Log("Touched Door!");
+        // Debug.Log("Touched Door!");
     }
 
     IEnumerator DoorInteractionCooldown()
@@ -127,6 +124,7 @@ public class DoorOpener : MonoBehaviour
             {
                 if (room.type == 5){
                     Debug.Log("Victory!");
+                    itemDisplay.ShowVictoryMessage("Victory! You have won!");
                 }
                 door.ResetColor();
             }
@@ -236,8 +234,5 @@ public class DoorOpener : MonoBehaviour
         Debug.Log("Next room grid grid position: " + nextRoomGridPos);
 
         levelGen.SetCurrentRoom(currentRoom.gridPos, nextRoomGridPos);
-        // nextRoom = levelGen.GetRoomInstanceAtGridPosition(nextRoomGridPos);
-        
-        //PlayerLocationManager.Instance.SetCurrentRoom(nextRoomGridPos);
     }
 }

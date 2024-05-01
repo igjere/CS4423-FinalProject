@@ -48,15 +48,6 @@ public class SheetAssigner : MonoBehaviour {
 			Vector3 pos = new Vector3(room.gridPos.x * (roomDimensions.x + gutterSize.x), room.gridPos.y * (roomDimensions.y + gutterSize.y), 0);
 			RoomInstance myRoom = Instantiate(RoomObj, pos, Quaternion.identity).GetComponent<RoomInstance>();
 
-			/* if (room.type == 0) {
-				int neighbors = NumberOfNeighbors(room.gridPos, rooms);
-
-				if (neighbors == 1) {
-					potentialBossRooms.Add(myRoom); // Rooms with exactly one neighbor are potential boss rooms
-				} else {
-					potentialItemAndShopRooms.Add(myRoom); // All other normal rooms are potential item or shop rooms
-				}
-			} */
 			if (room.type == 5){
 				myRoom.Setup(sheetsNormal[6], room.gridPos, room.type, room.doorTop, room.doorBot, room.doorLeft, room.doorRight);
 			}
@@ -91,22 +82,6 @@ public class SheetAssigner : MonoBehaviour {
 		return null; // Return null if no matching room is found
 	}
 
-	/* private void AssignSpecialRooms() {
-		if (potentialBossRooms.Count > 0) {
-			foreach (Room room in potentialBossRooms) {
-				room.type = 5;  // Confirm Boss room
-				// Debug.Log($"Assigned Boss Room at {room.gridPos}");
-        	}
-		}
-
-		if (potentialItemAndShopRooms.Count > 0) {
-			 foreach (Room room in potentialItemAndShopRooms) {
-				int roomType = (Random.value < 0.5) ? 2 : 3;  // Randomly choose between item (2) and shop (3)
-				room.type = roomType;
-				// Debug.Log($"Assigned {roomType} at {room.gridPos}");
-			}
-		}
-	} */
 	private void AssignSpecialRooms(Room[,] rooms) {
 		bool bossAssigned = false;
 		bool itemAssigned = false;
@@ -205,10 +180,4 @@ public class SheetAssigner : MonoBehaviour {
         return count;
     }
 
-    // Helper method to check if a room exists in the specified position
-    /* private bool RoomExists(Vector2 gridPos, Room[,] rooms) {
-        int x = Mathf.FloorToInt(gridPos.x);
-        int y = Mathf.FloorToInt(gridPos.y);
-        return x >= 0 && x < rooms.GetLength(0) && y >= 0 && y < rooms.GetLength(1) && rooms[x, y] != null;
-    } */
 }

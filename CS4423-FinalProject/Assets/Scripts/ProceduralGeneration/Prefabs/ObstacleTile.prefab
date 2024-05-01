@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4682424822368386}
   - component: {fileID: 212986427594164532}
   - component: {fileID: 61055580650241214}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ObstacleTile
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2028688029250137188}
   - component: {fileID: 1377295046403009067}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: planks
   m_TagString: Untagged
   m_Icon: {fileID: 0}

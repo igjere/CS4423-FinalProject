@@ -88,12 +88,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b6e7185c7716844a12cdf2f5a8dea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   myCreature: {fileID: 2861480948414850840}
   targetCreature: {fileID: 5500050124087882390, guid: 3d326c971ef50b14796663f17b663d90, type: 3}
   obstacles:
     serializedVersion: 2
-    m_Bits: 64
-  sightDistance: 90
+    m_Bits: 8
+  sightDistance: 100
   gridSize: 10
 --- !u!50 &3449612063556998752
 Rigidbody2D:
@@ -142,6 +143,7 @@ MonoBehaviour:
   spectral: 0
   homing: 0
   projectileSize: 1
+  launchOffset: 1.5
 --- !u!70 &6774782581203387882
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -93,9 +93,9 @@ MonoBehaviour:
   targetCreature: {fileID: 0}
   obstacles:
     serializedVersion: 2
-    m_Bits: 64
-  sightDistance: 150
-  gridSize: 20
+    m_Bits: 8
+  sightDistance: 100
+  gridSize: 10
 --- !u!50 &3449612063556998752
 Rigidbody2D:
   serializedVersion: 4

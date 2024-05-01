@@ -61,20 +61,6 @@ public class LevelGeneration : MonoBehaviour {
 			takenPositions.Insert(0,checkPos);
 		}	
 	}
-	/* void AssignRoomNeighbors() {
-		for (int x = 0; x < gridSizeX * 2; x++) {
-			for (int y = 0; y < gridSizeY * 2; y++) {
-				Room currentRoom = rooms[x, y];
-				if (currentRoom != null) {
-					// Assign neighbors, checking bounds to avoid index out of range
-					currentRoom.topNeighbor = y + 1 < gridSizeY * 2 ? rooms[x, y + 1] : null;
-					currentRoom.bottomNeighbor = y - 1 >= 0 ? rooms[x, y - 1] : null;
-					currentRoom.leftNeighbor = x - 1 >= 0 ? rooms[x - 1, y] : null;
-					currentRoom.rightNeighbor = x + 1 < gridSizeX * 2 ? rooms[x + 1, y] : null;
-				}
-			}
-		}
-	} */
 	Vector2 NewPosition(){
 		int x = 0, y = 0;
 		Vector2 checkingPos = Vector2.zero;
@@ -205,51 +191,6 @@ public class LevelGeneration : MonoBehaviour {
 			}
 		}
 	}
-	/* public void SetCurrentRoom(Vector2 oldRoom, Vector2 newRoom){
-		Debug.Log($"Setting current room from {oldRoom} to {newRoom}");
-
-		if (roomGameObjects.TryGetValue(newRoom, out GameObject oldRoomObj)) {
-			Debug.Log("Destroying old room sprite.");
-			Destroy(oldRoomObj);
-			roomGameObjects.Remove(newRoom); // Remove the old room from the dictionary
-		}
-
-		Room targetRoom = null;
-		// Attempt to find the room that matches newRoom
-		foreach (Room room in rooms){
-			if (room != null && room.gridPos == newRoom){
-				targetRoom = room;
-				break; // Exit the loop once the room is found
-			}
-		}
-
-		if (targetRoom == null) {
-			Debug.LogError("Target room not found in SetCurrentRoom.");
-			return; // Exit the method if no matching room is found
-		}
-
-		Vector2 drawPos = targetRoom.gridPos;
-		drawPos.x *= 16; // Aspect ratio of map sprite
-		drawPos.y *= 8;
-		// Instantiate a new room sprite and update the currentRoomSprite reference
-		GameObject newRoomObj = Instantiate(roomWhiteObj, drawPos, Quaternion.identity, mapRoot);
-		MapSpriteSelector mapper = newRoomObj.GetComponent<MapSpriteSelector>();
-		if (mapper != null) {
-			// Destroy(mapper.rend);
-			mapper.type = 2; // Assuming type 2 is for the current room
-			mapper.UpdateColor();
-			mapper.up = targetRoom.doorTop;
-			mapper.down = targetRoom.doorBot;
-			mapper.right = targetRoom.doorRight;
-			mapper.left = targetRoom.doorLeft;
-			mapper.rend.sortingOrder = 0;
-		} 
-		else {
-			Debug.LogError("MapSpriteSelector component not found on instantiated room object.");
-		}
-		roomGameObjects[newRoom] = newRoomObj;
-		currentRoomSprite = newRoomObj;
-	} */
 	public void SetCurrentRoom(Vector2 oldRoom, Vector2 newRoom) {
 		Debug.Log($"Setting current room from {oldRoom} to {newRoom}");
 		
@@ -433,22 +374,5 @@ public class LevelGeneration : MonoBehaviour {
 			}
 		}
 	}
-	/* public void UpdateSpecialRoomColors() {
-			foreach (var kvp in roomGameObjects) {
-				var roomPos = kvp.Key;
-				var roomObj = kvp.Value;
-
-				Room room = rooms[(int)roomPos.x + gridSizeX, (int)roomPos.y + gridSizeY];
-				if (room != null) {
-					MapSpriteSelector mapSpriteSelector = roomObj.GetComponent<MapSpriteSelector>();
-					if (mapSpriteSelector != null) {
-						// Here we directly set the room type which the MapSpriteSelector
-						// uses to determine the color
-						mapSpriteSelector.type = room.type++;
-						mapSpriteSelector.UpdateColor(); // Ensure MapSpriteSelector's UpdateColor method uses the 'type' to set the color
-					}
-				}
-			}
-	} */
 
 }
